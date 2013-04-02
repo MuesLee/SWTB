@@ -27,42 +27,29 @@ public class MainFrame extends JFrame
 
 	public MainFrame(Spielleiter spielleiter)
 	{
-		super("Cellular Automaton");
+		super("Schiffe versenken");
 		this.spielleiter = spielleiter;
 		configureFrame();
-		//configurePanel();
 		configureLabel();
 		configureMenu();
 		configurePane();
-		//add(jpanel, BorderLayout.CENTER);
 		pack();
 	}
 
 	private void configurePane()
 	{
-		SchiffComponent schiffComp = new SchiffComponent(spielleiter, new Dimension(400, 400));
+		SchiffComponent schiffComp = new SchiffComponent(spielleiter, new Dimension(600, 600));
 		getContentPane().add(schiffComp);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(jMenuBar, BorderLayout.PAGE_START);
 		getContentPane().add(jLabel, BorderLayout.LINE_END);
-		schiffComp.setLocation(10, 50);
+		schiffComp.setLocation(5, 40);
 	}
-
-	//	private void configurePanel()
-	//	{
-	//		jpanel.setVisible(true);
-	//		Dimension size = new Dimension(50, 50);
-	//		jpanel.setSize(size);
-	//		jpanel.setPreferredSize(size);
-	//		jpanel.setMaximumSize(size);
-	//		jpanel.setBackground(Color.BLACK);
-	//		jpanel.add(new SchiffComponent(spielleiter.getSeekarte(), new Dimension(500, 500)));
-	//	}
 
 	private void configureLabel()
 	{
-		Dimension size = new Dimension(50, 400);
+		Dimension size = new Dimension(50, 50);
 		jLabel.setBackground(Color.gray);
 		jLabel.setSize(size);
 		jLabel.setPreferredSize(size);
@@ -75,7 +62,7 @@ public class MainFrame extends JFrame
 
 	private void configureFrame()
 	{
-		Dimension size = new Dimension(600, 600);
+		Dimension size = new Dimension(700,700);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Schiffe versenken");
 		setLocationRelativeTo(null);

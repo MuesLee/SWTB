@@ -65,7 +65,7 @@ public class Spielleiter
 	{
 
 		Schiffsteil schiffsteil = seekarte.getSchiffsteil(schuss.getX(), schuss.getY());
-
+		System.out.println("schiffsteil" + schiffsteil);
 		if ((schiffsteil == null) || !schiffsteil.isIntakt())
 		{
 			return false;

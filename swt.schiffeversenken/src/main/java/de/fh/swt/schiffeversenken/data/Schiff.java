@@ -63,7 +63,6 @@ public abstract class Schiff
 		int result = 1;
 		result = prime * result + anzahlTeile;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + Arrays.hashCode(schiffsteile);
 		return result;
 	}
 
@@ -83,9 +82,13 @@ public abstract class Schiff
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (!Arrays.equals(schiffsteile, other.schiffsteile))
-			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Schiff [name=" + name + ", anzahlTeile=" + anzahlTeile + "]";
+	}
+	
 
 }

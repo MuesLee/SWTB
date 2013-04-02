@@ -40,7 +40,6 @@ public class SchiffComponent extends JComponent
 		{
 			for (int o = 0; o < spielleiter.getSeekarte().getKoordinaten().length; o++)
 			{
-				System.out.println(i + " " + o);
 				Schiffsteil schiffsteil = spielleiter.getSeekarte().getSchiffsteil(i, o);
 				if (schiffsteil == null)
 				{
@@ -50,7 +49,6 @@ public class SchiffComponent extends JComponent
 				else
 				{
 
-					System.out.println(" xx");
 					if (schiffsteil.isIntakt())
 					{
 						g.setColor(Color.GREEN);
@@ -60,7 +58,7 @@ public class SchiffComponent extends JComponent
 						g.setColor(Color.RED);
 					}
 				}
-				g.fillRect(o * (zellGroesse + platzZwischenZellen), i * (zellGroesse + platzZwischenZellen),
+				g.fillRect(i * (zellGroesse + platzZwischenZellen), o * (zellGroesse + platzZwischenZellen),
 					zellGroesse, zellGroesse);
 			}
 

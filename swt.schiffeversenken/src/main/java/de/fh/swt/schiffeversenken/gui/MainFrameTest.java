@@ -40,7 +40,7 @@ public class MainFrameTest
 
 		seekarte.setKoordinaten(schiffsteile);
 
-		System.out.println(seekarte);
+		//System.out.println(seekarte);
 
 	}
 }

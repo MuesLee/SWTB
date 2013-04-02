@@ -55,5 +55,11 @@ public class Schiffsteil
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Schiffsteil [intakt=" + intakt + ", schiff=" + schiff + "]";
+	}
+
+	
 }
 
