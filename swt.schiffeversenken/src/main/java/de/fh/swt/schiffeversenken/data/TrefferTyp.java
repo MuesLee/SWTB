@@ -2,8 +2,8 @@ package de.fh.swt.schiffeversenken.data;
 
 public enum TrefferTyp {
 
-	unbekannt("nicht überprüfter Schuss"), keinTreffer("Kein Treffer"), treffer("Treffer"), trefferAberSchonKaputt(
-		"Treffer, aber dieser Schiffsteil ist bereits zerstört!");
+	unbekannt("nicht überprüfter Schuss"), keinTreffer("Platsch! Kein Treffer"), treffer("Treffer!"), trefferAberSchonKaputt(
+		"Dieses Schiffsteil ist bereits zerstört!");
 
 	private String text;
 

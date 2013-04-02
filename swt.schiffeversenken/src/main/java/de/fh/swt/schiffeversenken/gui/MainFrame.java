@@ -24,6 +24,7 @@ public class MainFrame extends JFrame
 	private JPanel jpanel = new JPanel();
 	private JLabel jLabel = new JLabel();
 	private Spielleiter spielleiter;
+	private ConfFrame confFrame;
 
 	public MainFrame(Spielleiter spielleiter)
 	{
@@ -33,6 +34,7 @@ public class MainFrame extends JFrame
 		configureLabel();
 		configureMenu();
 		configurePane();
+		configureConfFrame();
 		pack();
 	}
 
@@ -60,8 +62,14 @@ public class MainFrame extends JFrame
 		jLabel.setVisible(true);
 	}
 
+	private void configureConfFrame() {
+		confFrame = new ConfFrame(spielleiter, this);
+	}
+	
 	private void configureFrame()
 	{
+		
+		
 		Dimension size = new Dimension(700,700);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Schiffe versenken");
@@ -84,7 +92,7 @@ public class MainFrame extends JFrame
 
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showMessageDialog(frame, "Geht noch nicht");
+				confFrame.setVisible(true);
 			}
 		});
 		JMenuItem menuItemBeenden = new JMenuItem("Beenden");
@@ -100,6 +108,11 @@ public class MainFrame extends JFrame
 		jMenu.add(menuItemBeenden);
 		jMenuBar.add(jMenu);
 		jMenuBar.setVisible(true);
+	}
+
+	public void starteSpiel() {
+		
+		//TODO 
 	}
 
 }

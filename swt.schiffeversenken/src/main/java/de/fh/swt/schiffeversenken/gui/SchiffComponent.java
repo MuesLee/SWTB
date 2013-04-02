@@ -91,8 +91,7 @@ public class SchiffComponent extends JComponent
 
 	public void setzeSchuss(int x, int y)
 	{
-		JOptionPane.showMessageDialog(this,
-			"Der Schuss war ein Treffer: " + spielleiter.pruefeSchuss(new Schuss(x, y, TrefferTyp.unbekannt)));
+		spielleiter.verarbeiteSchuss(new Schuss(x, y, TrefferTyp.unbekannt));
 	}
 
 	private double calculateCellSize(double height, double width)

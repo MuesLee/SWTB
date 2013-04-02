@@ -61,4 +61,8 @@ public class Spieler
 		this.schussliste = schussliste;
 	}
 
+	public void addSchuss(Schuss schuss) {
+		this.schussliste.add(schuss);
+	}
+
 }
