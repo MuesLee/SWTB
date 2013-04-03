@@ -1,9 +1,9 @@
 package de.fh.swt.schiffeversenken.data;
 
-public class UBoot extends Schiff
+public class Submarine extends Ship
 {
 
-	public UBoot(String name)
+	public Submarine(String name)
 	{
 		super(name, 2);
 	}

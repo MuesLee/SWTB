@@ -1,11 +1,9 @@
 package de.fh.swt.schiffeversenken.gui;
 
-import de.fh.swt.schiffeversenken.controller.Spieler;
-import de.fh.swt.schiffeversenken.controller.Spielleiter;
-import de.fh.swt.schiffeversenken.data.Kreuzer;
-import de.fh.swt.schiffeversenken.data.Schiffsteil;
-import de.fh.swt.schiffeversenken.data.Schlachtschiff;
-import de.fh.swt.schiffeversenken.data.Seekarte;
+import de.fh.swt.schiffeversenken.controller.GameManager;
+import de.fh.swt.schiffeversenken.data.Battleship;
+import de.fh.swt.schiffeversenken.data.Cruiser;
+import de.fh.swt.schiffeversenken.data.ShipPart;
 
 public class MainFrameTest
 {
@@ -13,34 +11,27 @@ public class MainFrameTest
 	public static void main(String args[])
 	{
 
-		Seekarte seekarte = new Seekarte(12);
-		Spieler spielerEins = new Spieler("Hans");
-		Spieler spielerZwei = new Spieler("Wurst");
-		Spielleiter spielleiter = new Spielleiter(seekarte, spielerEins, spielerZwei);
+		GameManager gameManager = new GameManager();
 
-		MainFrame mainFrame = new MainFrame(spielleiter);
+		ShipPart[][] coordsPlayerOne = new ShipPart[12][12];
+		ShipPart[][] coordsPlayerTwo = new ShipPart[12][12];
+		Battleship schlachtschiff = new Battleship("asd");
+		Cruiser kreuzer = new Cruiser("dhf");
 
-		Schiffsteil[][] schiffsteile = new Schiffsteil[12][12];
-		Schlachtschiff schlachtschiff = new Schlachtschiff("asd");
-		Kreuzer kreuzer = new Kreuzer("dhf");
-
-		for (int i = 0; i < schlachtschiff.getSchiffsteile().length; i++)
+		for (int i = 0; i < schlachtschiff.getShipParts().length; i++)
 		{
-			schiffsteile[0][i] = schlachtschiff.getSchiffsteile()[i];
+			coordsPlayerOne[0][i] = schlachtschiff.getShipParts()[i];
+			coordsPlayerTwo[i][4] = schlachtschiff.getShipParts()[i];
 		}
-		for (int i = 0; i < kreuzer.getSchiffsteile().length; i++)
+		for (int i = 0; i < kreuzer.getShipParts().length; i++)
 		{
-			schiffsteile[11][i] = kreuzer.getSchiffsteile()[i];
+			coordsPlayerOne[11][i] = kreuzer.getShipParts()[i];
+			coordsPlayerTwo[i][7] = kreuzer.getShipParts()[i];
 		}
-		schiffsteile[11][0].setIntakt(false);
-		schiffsteile[11][2].setIntakt(false);
-		schiffsteile[0][0].setIntakt(false);
-		schiffsteile[0][2].setIntakt(false);
-		schiffsteile[0][4].setIntakt(false);
 
-		seekarte.setKoordinaten(schiffsteile);
+		gameManager.getPlayerOne().getSeamap().setShipParts(coordsPlayerOne);
+		gameManager.getPlayerTwo().getSeamap().setShipParts(coordsPlayerTwo);
 
-		//System.out.println(seekarte);
-
+		gameManager.start();
 	}
 }

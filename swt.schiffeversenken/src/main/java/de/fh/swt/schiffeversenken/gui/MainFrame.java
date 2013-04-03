@@ -7,31 +7,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
-import de.fh.swt.schiffeversenken.controller.Spielleiter;
+import de.fh.swt.schiffeversenken.controller.GameManager;
 
 public class MainFrame extends JFrame
 {
 
 	private JMenuBar jMenuBar = new JMenuBar();
-	private JPanel jpanel = new JPanel();
-	private JLabel jLabel = new JLabel();
-	private Spielleiter spielleiter;
+	private GameManager gameManager;
 	private ConfFrame confFrame;
+	private ShipComponent schiffComp;
+	private ShipPlacementFrame shipPlacementFrame;
 
-	public MainFrame(Spielleiter spielleiter)
+	public MainFrame(GameManager spielleiter)
 	{
 		super("Schiffe versenken");
-		this.spielleiter = spielleiter;
+		this.setGameManager(spielleiter);
 		configureFrame();
-		configureLabel();
 		configureMenu();
 		configurePane();
 		configureConfFrame();
@@ -40,46 +36,36 @@ public class MainFrame extends JFrame
 
 	private void configurePane()
 	{
-		SchiffComponent schiffComp = new SchiffComponent(spielleiter, new Dimension(600, 600));
+		schiffComp = new ShipComponent(getGameManager(), new Dimension(600, 600));
 		getContentPane().add(schiffComp);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(jMenuBar, BorderLayout.PAGE_START);
-		getContentPane().add(jLabel, BorderLayout.LINE_END);
 		schiffComp.setLocation(5, 40);
 	}
 
-	private void configureLabel()
+	private void configureConfFrame()
 	{
-		Dimension size = new Dimension(50, 50);
-		jLabel.setBackground(Color.gray);
-		jLabel.setSize(size);
-		jLabel.setPreferredSize(size);
-		jLabel.setMaximumSize(size);
-		JTextArea area = new JTextArea();
-		area.setText(spielleiter.getAktiverSpieler().getSchussliste().toString());
-		area.setVisible(true);
-		jLabel.setVisible(true);
+		confFrame = new ConfFrame(getGameManager(), this);
 	}
 
-	private void configureConfFrame() {
-		confFrame = new ConfFrame(spielleiter, this);
-	}
-	
 	private void configureFrame()
 	{
-		
-		
-		Dimension size = new Dimension(700,700);
+		setLayout(new BorderLayout());
+		Dimension size = new Dimension(700, 700);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Schiffe versenken");
 		setLocationRelativeTo(null);
-		setLayout(new BorderLayout());
 		setSize(size);
 		setMaximumSize(size);
 		setPreferredSize(size);
 		setResizable(false);
 		setVisible(true);
+	}
+
+	public void showMessage(String message)
+	{
+		JOptionPane.showMessageDialog(this, message);
 	}
 
 	private void configureMenu()
@@ -110,9 +96,14 @@ public class MainFrame extends JFrame
 		jMenuBar.setVisible(true);
 	}
 
-	public void starteSpiel() {
-		
-		//TODO 
+	public GameManager getGameManager()
+	{
+		return gameManager;
+	}
+
+	public void setGameManager(GameManager gameManager)
+	{
+		this.gameManager = gameManager;
 	}
 
 }

@@ -1,9 +1,9 @@
 package de.fh.swt.schiffeversenken.data;
 
-public class Schlachtschiff extends Schiff
+public class Battleship extends Ship
 {
 
-	public Schlachtschiff(String name)
+	public Battleship(String name)
 	{
 		super(name, 5);
 	}
