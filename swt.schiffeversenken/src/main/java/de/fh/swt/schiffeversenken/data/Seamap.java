@@ -26,16 +26,24 @@ public class Seamap
 	public void putShipOnSeamap(Ship ship, Coords fore, Direction direction) throws IllegalShipPlacementException
 	{
 
+		if (ship == null)
+		{
+			throw new IllegalShipPlacementException("Kein Schiff ausgewählt!");
+		}
+
 		int modX = 1, modY = 1;
 
 		try
 		{
 
-			if (direction == Direction.UP)
+			if (direction == Direction.DOWN)
 			{
-				//Falls das Schiff nach oben ausgerichtet ist, wird x nicht erhöht und nur y verändert, weshalb der X-Startwert aus der Variablen fore genommen werden soll
-				//Was das bringt? Es erspart eine weitere for-Schleife und macht was her xD
-				//Keine Angst, es gibt für diese Methode diverse Tests^^
+				/**
+				 * Falls das Schiff nach unten ausgerichtet ist, wird x nicht erhöht und nur y
+				 * verändert, weshalb der X-Startwert aus der Variablen fore genommen werden soll
+				 * Was das bringt? Es erspart eine weitere for-Schleife Keine Angst, es gibt für
+				 * diese Methode diverse Tests^^
+				 */
 				modX = 0;
 				modY = 1;
 			}
@@ -51,6 +59,7 @@ public class Seamap
 
 				ShipPart shipPart = shipParts[(modX * startwert) + (fore.getX() * modY)][(modX * fore.getY())
 					+ (startwert * modY)];
+
 				if (shipPart == null)
 				{
 					shipParts[(modX * startwert) + (fore.getX() * modY)][(modX * fore.getY()) + (startwert * modY)] = ship

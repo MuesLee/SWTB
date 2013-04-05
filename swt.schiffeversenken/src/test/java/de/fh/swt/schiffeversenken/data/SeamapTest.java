@@ -32,7 +32,7 @@ public class SeamapTest
 	{
 		Cruiser cruiser = new Cruiser("Kreuzer 1");
 		Coords coords = new Coords(5, size);
-		seamap.putShipOnSeamap(cruiser, coords, Direction.UP);
+		seamap.putShipOnSeamap(cruiser, coords, Direction.DOWN);
 		Assert.assertNull(seamap.getShipPart(coords));
 		seamap = new Seamap(size);
 	}
@@ -42,8 +42,10 @@ public class SeamapTest
 	{
 		Cruiser cruiser = new Cruiser("Kreuzer 2");
 		Coords coords = new Coords(2, 0);
-		seamap.putShipOnSeamap(cruiser, coords, Direction.UP);
+		seamap.putShipOnSeamap(cruiser, coords, Direction.DOWN);
 		Assert.assertNotNull(seamap.getShipPart(coords));
+		Assert.assertNotNull(seamap.getShipPart(new Coords(2, 1)));
+		Assert.assertNotNull(seamap.getShipPart(new Coords(2, 2)));
 		seamap = new Seamap(size);
 	}
 

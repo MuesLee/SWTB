@@ -83,7 +83,7 @@ public class GameManager extends Observable
 		}
 		else
 		{
-			intiate();
+			activePlayer = playerOne;
 		}
 
 		setChanged();
