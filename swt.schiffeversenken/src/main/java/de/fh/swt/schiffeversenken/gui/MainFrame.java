@@ -13,40 +13,37 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import de.fh.swt.schiffeversenken.controller.GameManager;
+import de.fh.swt.schiffeversenken.controller.Player;
+import de.fh.swt.schiffeversenken.data.Coords;
+import de.fh.swt.schiffeversenken.data.Direction;
+import de.fh.swt.schiffeversenken.data.Ship;
+import de.fh.swt.schiffeversenken.data.ShipPart;
 
 public class MainFrame extends JFrame
 {
 
 	private JMenuBar jMenuBar = new JMenuBar();
 	private GameManager gameManager;
-	private ConfFrame confFrame;
-	private ShipComponent schiffComp;
-	private ShipPlacementFrame shipPlacementFrame;
+	private ShipComponent shipComponent;
 
-	public MainFrame(GameManager spielleiter)
+	public MainFrame(GameManager spielleiter, ShipComponent shipComponent)
 	{
 		super("Schiffe versenken");
 		this.setGameManager(spielleiter);
+		this.shipComponent = shipComponent;
 		configureFrame();
 		configureMenu();
 		configurePane();
-		configureConfFrame();
 		pack();
 	}
 
 	private void configurePane()
 	{
-		schiffComp = new ShipComponent(getGameManager(), new Dimension(600, 600));
-		getContentPane().add(schiffComp);
+		
+		getContentPane().add(shipComponent);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(jMenuBar, BorderLayout.PAGE_START);
-		schiffComp.setLocation(5, 40);
-	}
-
-	private void configureConfFrame()
-	{
-		confFrame = new ConfFrame(getGameManager(), this);
 	}
 
 	private void configureFrame()
@@ -78,7 +75,7 @@ public class MainFrame extends JFrame
 
 			public void actionPerformed(ActionEvent e)
 			{
-				confFrame.setVisible(true);
+				gameManager.showConfFrame();
 			}
 		});
 		JMenuItem menuItemBeenden = new JMenuItem("Beenden");
@@ -104,6 +101,14 @@ public class MainFrame extends JFrame
 	public void setGameManager(GameManager gameManager)
 	{
 		this.gameManager = gameManager;
+	}
+
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) {
+		gameManager.putShipOnSeamap(ship,  coords,  dir);
+	}
+
+	public void showShipPlacementFrame() {
+		gameManager.showShipPlacementFrame();
 	}
 
 }

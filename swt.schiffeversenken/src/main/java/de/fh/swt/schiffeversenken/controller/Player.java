@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import de.fh.swt.schiffeversenken.data.Battleship;
+import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Cruiser;
 import de.fh.swt.schiffeversenken.data.Destroyer;
+import de.fh.swt.schiffeversenken.data.Direction;
+import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
 import de.fh.swt.schiffeversenken.data.Seamap;
 import de.fh.swt.schiffeversenken.data.Ship;
 import de.fh.swt.schiffeversenken.data.Shot;
@@ -137,6 +140,10 @@ public class Player
 			return false;
 		}
 		return true;
+	}
+
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException {
+		seamap.putShipOnSeamap(ship, coords, dir);
 	}
 
 }

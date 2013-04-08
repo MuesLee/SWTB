@@ -1,6 +1,8 @@
 package de.fh.swt.schiffeversenken.data;
 
-public class Seamap
+import java.util.Observable;
+
+public class Seamap extends Observable
 {
 
 	private ShipPart[][] shipParts;
@@ -64,6 +66,8 @@ public class Seamap
 				{
 					shipParts[(modX * startwert) + (fore.getX() * modY)][(modX * fore.getY()) + (startwert * modY)] = ship
 						.getShipParts()[i];
+					setChanged();
+					notifyObservers(shipParts);
 				}
 				else
 				{

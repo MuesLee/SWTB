@@ -14,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
+import de.fh.swt.schiffeversenken.controller.Player;
+import de.fh.swt.schiffeversenken.data.Coords;
+import de.fh.swt.schiffeversenken.data.Direction;
 import de.fh.swt.schiffeversenken.data.Ship;
 
 public class ShipPlacementFrame extends JFrame
@@ -64,15 +67,14 @@ public class ShipPlacementFrame extends JFrame
 		return shipBox;
 	}
 
-	public ShipPlacementFrame(MainFrame mainFrame)
+	public ShipPlacementFrame(MainFrame mainFrame, ShipPlacementComponent shipPlacementComponent)
 	{
 		super("Platziere die Schiffe");
 		this.mainFrame = mainFrame;
-
+		this.shipPlacementComponent= shipPlacementComponent; 
 		configureButtons();
 		configureShipBox();
 		configureFrame();
-		configureShipComponent();
 		addAllComps();
 		pack();
 
@@ -102,14 +104,20 @@ public class ShipPlacementFrame extends JFrame
 
 			public void actionPerformed(ActionEvent e)
 			{
-				if (shipBox.getItemCount() == 0)
-				{
-					mainFrame.getGameManager().startGame();
-					dispose();
-				}
-				else
+				if (shipBox.getItemCount()  != 0)
 				{
 					JOptionPane.showMessageDialog(mainFrame, "Es wurden noch nicht alle Schiffe gesetzt!");
+				}
+					
+				else{
+					if(mainFrame.getGameManager().bothPlayerPlacedTheirShips())
+					{
+						mainFrame.getGameManager().startGame();
+						dispose();
+					}
+					else{
+						mainFrame.getGameManager().nextTurn();
+					}
 				}
 
 			}
@@ -132,7 +140,7 @@ public class ShipPlacementFrame extends JFrame
 	private void configureFrame()
 	{
 		setLayout(new BorderLayout());
-		Dimension size = new Dimension(900, 900);
+		Dimension size = new Dimension(700, 700);
 		setSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
@@ -144,10 +152,7 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
-	private void configureShipComponent()
-	{
-
-		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(), new Dimension(300,
-			300));
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) {
+		mainFrame.putShipOnSeamap(ship,  coords,  dir);		
 	}
 }

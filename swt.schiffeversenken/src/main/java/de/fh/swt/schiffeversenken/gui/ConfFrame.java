@@ -28,16 +28,11 @@ public class ConfFrame extends JFrame
 		this.spielleiter = spielleiter;
 		this.mainFrame = mainFrame;
 
-		setVisible(false);
 		configureFrame();
 		configureTextFields();
 		configureBoxes();
 		repaint();
-	}
-
-	private void createShipPlacementFrame()
-	{
-		this.shipPlacementFrame = new ShipPlacementFrame(mainFrame);
+		setVisible(true);
 	}
 
 	private void configureFrame()
@@ -66,7 +61,7 @@ public class ConfFrame extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				readValues();
-				createShipPlacementFrame();
+				mainFrame.showShipPlacementFrame();
 				dispose();
 			}
 
