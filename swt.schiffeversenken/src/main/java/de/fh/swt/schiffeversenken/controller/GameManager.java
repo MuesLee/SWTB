@@ -77,6 +77,10 @@ public class GameManager extends Observable
 			{
 				setHit(shipPart);
 				shot.setHit(HitType.HIT);
+				if(!shipPart.getShip().isIntact())
+				{
+					JOptionPane.showMessageDialog(mainFrame, shipPart.getShip().getName() +" wurde versenkt");
+				}
 			}
 		}
 		storeShot(shot);
@@ -209,7 +213,9 @@ public class GameManager extends Observable
 
 	public void startGame()
 	{
-
+		JOptionPane.showMessageDialog(mainFrame, "Dies ist das Seegebiet deines Gegners./nTreffer werden grün dargestellt./nFehlschüsse rot.");
+		nextTurn();
+		fireAtWill();
 	}
 
 	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) {
@@ -245,10 +251,12 @@ public class GameManager extends Observable
 	
 	private void createShipPlacementComponent()
 	{
-		this.shipPlacementComponent = new ShipPlacementComponent(this, new Dimension(300,300));
+		this.shipPlacementComponent = new ShipPlacementComponent(this, new Dimension(800,800));
 	}
 
 	public void showShipPlacementFrame() {
+		playerOne.setName(confFrame.getNameForPlayerOne());
+		playerTwo.setName(confFrame.getNameForPlayerTwo());
 		createShipPlacementComponent();
 		this.shipPlacementFrame = new ShipPlacementFrame(mainFrame, shipPlacementComponent);
 		

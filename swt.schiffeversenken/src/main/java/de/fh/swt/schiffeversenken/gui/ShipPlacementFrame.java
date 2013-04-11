@@ -106,7 +106,7 @@ public class ShipPlacementFrame extends JFrame
 			{
 				if (shipBox.getItemCount()  != 0)
 				{
-					JOptionPane.showMessageDialog(mainFrame, "Es wurden noch nicht alle Schiffe gesetzt!");
+					JOptionPane.showMessageDialog(shipPlacementComponent, "Es wurden noch nicht alle Schiffe gesetzt!");
 				}
 					
 				else{
@@ -117,6 +117,7 @@ public class ShipPlacementFrame extends JFrame
 					}
 					else{
 						mainFrame.getGameManager().nextTurn();
+						fillShipBox();
 					}
 				}
 
@@ -129,12 +130,16 @@ public class ShipPlacementFrame extends JFrame
 	{
 		this.shipBox = new JComboBox();
 		shipBox.setEditable(false);
+		fillShipBox();
+
+	}
+
+	private void fillShipBox() {
 		List<Ship> ships = mainFrame.getGameManager().getActivePlayer().getShips();
 		for (Ship s : ships)
 		{
 			shipBox.addItem(s);
 		}
-
 	}
 
 	private void configureFrame()

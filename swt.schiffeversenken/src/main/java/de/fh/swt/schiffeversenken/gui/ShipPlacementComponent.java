@@ -42,8 +42,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	{
 		super.paint(g);
 		cellSize = (int) calculateCellSize(seamapSize, seamapSize);
-		System.out.println("CellSize " + cellSize);
-
+		shipParts = gameManager.getActivePlayer().getSeamap().getShipParts();
 		
 		for (int x = 0; x < seamapSize; x++)
 		{

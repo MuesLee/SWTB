@@ -72,7 +72,7 @@ public class Seamap extends Observable
 				else
 				{
 					throw new IllegalShipPlacementException("Schiff konnte nicht platziert werden. Das Schiff "
-						+ shipPart.getSchiff().getName() + " ist im Weg!");
+						+ shipPart.getShip().getName() + " ist im Weg!");
 				}
 
 			}

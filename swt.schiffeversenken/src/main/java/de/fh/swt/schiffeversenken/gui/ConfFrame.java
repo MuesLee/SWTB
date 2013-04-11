@@ -16,8 +16,8 @@ public class ConfFrame extends JFrame
 
 	private JButton buttonStart;
 	private JButton buttonCancel;
-	private JTextField textNameSpielerEins;
-	private JTextField textNameSpielerZwei;
+	private JTextField textNamePlayerOne;
+	private JTextField textNamePlayerTwo;
 	private GameManager spielleiter;
 	private MainFrame mainFrame;
 	private ShipPlacementFrame shipPlacementFrame;
@@ -60,7 +60,6 @@ public class ConfFrame extends JFrame
 
 			public void actionPerformed(ActionEvent arg0)
 			{
-				readValues();
 				mainFrame.showShipPlacementFrame();
 				dispose();
 			}
@@ -81,15 +80,19 @@ public class ConfFrame extends JFrame
 
 	private void configureTextFields()
 	{
-		textNameSpielerEins = new JTextField("Name Spieler 1");
-		textNameSpielerZwei = new JTextField("Name Spieler 2");
-		add(textNameSpielerEins);
-		add(textNameSpielerZwei);
+		textNamePlayerOne = new JTextField("Name Spieler 1");
+		textNamePlayerTwo = new JTextField("Name Spieler 2");
+		add(textNamePlayerOne);
+		add(textNamePlayerTwo);
 	}
 
-	private void readValues()
+	public String getNameForPlayerOne()
 	{
-		textNameSpielerEins.getText().trim();
+		return textNamePlayerOne.getText().trim();
+	}
+	public String getNameForPlayerTwo()
+	{
+		return textNamePlayerTwo.getText().trim();
 	}
 
 }

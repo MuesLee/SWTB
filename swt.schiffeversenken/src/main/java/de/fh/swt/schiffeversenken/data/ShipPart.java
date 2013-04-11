@@ -15,7 +15,7 @@ public class ShipPart
 		this.intact = false;
 	}
 
-	public Ship getSchiff()
+	public Ship getShip()
 	{
 		return schiff;
 	}
