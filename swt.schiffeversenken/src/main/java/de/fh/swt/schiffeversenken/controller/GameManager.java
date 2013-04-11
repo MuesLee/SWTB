@@ -1,10 +1,7 @@
 package de.fh.swt.schiffeversenken.controller;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.Observable;
-
-import javax.swing.JOptionPane;
 
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
@@ -13,11 +10,7 @@ import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
 import de.fh.swt.schiffeversenken.data.Ship;
 import de.fh.swt.schiffeversenken.data.ShipPart;
 import de.fh.swt.schiffeversenken.data.Shot;
-import de.fh.swt.schiffeversenken.gui.ConfFrame;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
-import de.fh.swt.schiffeversenken.gui.ShipComponent;
-import de.fh.swt.schiffeversenken.gui.ShipPlacementComponent;
-import de.fh.swt.schiffeversenken.gui.ShipPlacementFrame;
 
 public class GameManager extends Observable
 {
@@ -26,42 +19,34 @@ public class GameManager extends Observable
 	private Player playerTwo;
 	private Player activePlayer;
 	private MainFrame mainFrame;
-	private ConfFrame confFrame;
-	private ShipPlacementFrame shipPlacementFrame;
-	public ShipPlacementFrame getShipPlacementFrame() {
-		return shipPlacementFrame;
-	}
 
-	private ShipComponent shipComponent;
-	private ShipPlacementComponent shipPlacementComponent;
-	
 	private boolean fireAtWill = false;
 
 	public GameManager()
 	{
-		intiate();
+		initiate();
 	}
 
-	private void intiate()
+	private void initiate()
 	{
 		playerOne = new Player("Spieler 1", 12);
-		playerTwo = new Player("Spieler 1", 12);
+		playerTwo = new Player("Spieler 2", 12);
 		activePlayer = playerOne;
 
 	}
 
 	public void start()
-	{	createShipComponent();
-		mainFrame = new MainFrame(this, shipComponent);
+	{
+		mainFrame = new MainFrame(this);
 	}
 
-	public void handleShot(Shot shot)
+	public void handleShot(Coords coords)
 	{
+		Shot shot = new Shot(coords, HitType.UNKNOWN);
 
 		ceaseFire();
 
-		ShipPart shipPart = getInactivePlayer().getSeamap().getShipPart(shot.getCoords());
-		System.out.println("schiffsteil" + shipPart);
+		ShipPart shipPart = getInactivePlayersShipPartForCoords(coords);
 
 		if ((shipPart == null))
 		{
@@ -77,32 +62,58 @@ public class GameManager extends Observable
 			{
 				setHit(shipPart);
 				shot.setHit(HitType.HIT);
-				if(!shipPart.getShip().isIntact())
+				if (!shipPart.getShip().isIntact())
 				{
-					JOptionPane.showMessageDialog(mainFrame, shipPart.getShip().getName() +" wurde versenkt");
+					mainFrame.showMessage(shipPart.getShip().getName() + " wurde versenkt");
 				}
 			}
+
 		}
 		storeShot(shot);
 		setChanged();
 		notifyObservers();
 
-		switch (shot.getHit())
+		if (!getInactivePlayer().isDefeated())
 		{
-			case HIT:
-			//aktiver Spieler darf noch einmal schießen
-			break;
-			case NOHIT:
-			case HITAGAIN:
-				nextTurn();
-			break;
+			switch (shot.getHit())
+			{
+				case NOHIT:
+				case HITAGAIN:
+					nextTurn();
+				break;
+				case HIT:
+					//aktiver Spieler darf noch einmal schießen
+				default:
+				break;
+			}
+			fireAtWill();
 		}
-		fireAtWill();
+		else
+		{
+			endGame();
+		}
+	}
+
+	private ShipPart getInactivePlayersShipPartForCoords(Coords coords)
+	{
+		return getInactivePlayer().getSeamap().getShipPart(coords);
+	}
+
+	private void endGame()
+	{
+		mainFrame.showMessage("Herzlichen Glückwunsch " + activePlayer.getName() + ",\nDu hast gewonnen!");
+		resetGame();
+	}
+
+	private void resetGame()
+	{
+		initiate();
+		start();
 	}
 
 	public void nextTurn()
 	{
-		if (activePlayer == playerOne)
+		if (activePlayer.equals(playerOne))
 		{
 			activePlayer = playerTwo;
 		}
@@ -110,26 +121,25 @@ public class GameManager extends Observable
 		{
 			activePlayer = playerOne;
 		}
-
 		setChanged();
-		notifyObservers(getCurrentViewOfActivePlayer());
-		mainFrame.showMessage(activePlayer.getName() + " ist nun am Zug!");
+		notifyObservers();
+		getMainFrame().showMessage(activePlayer.getName() + " ist nun am Zug!");
 	}
 
-	public Color[][] getCurrentViewOfActivePlayer() {
-		
+	public Color[][] getCurrentViewOfActivePlayer()
+	{
+
 		Color[][] colors = new Color[activePlayer.getSeamap().getSize()][activePlayer.getSeamap().getSize()];
 		int size = getActivePlayer().getSeamap().getSize();
-		
-		
-		for(int x = 0;x<size;x++)
+
+		for (int x = 0; x < size; x++)
 		{
-			for(int y = 0;y<size;y++)
+			for (int y = 0; y < size; y++)
 			{
-				colors[x][y]=Color.BLUE;
+				colors[x][y] = Color.BLUE;
 			}
 		}
-		
+
 		for (Shot s : getActivePlayer().getShots())
 		{
 			switch (s.getHit())
@@ -139,14 +149,14 @@ public class GameManager extends Observable
 					colors[s.getCoords().getX()][s.getCoords().getY()] = Color.GREEN;
 				break;
 				case NOHIT:
-					colors[s.getCoords().getX()][s.getCoords().getY()] =Color.RED;
+					colors[s.getCoords().getX()][s.getCoords().getY()] = Color.RED;
 				break;
-			case UNKNOWN:
+				case UNKNOWN:
 				default:
 					continue;
 			}
 		}
-		
+
 		return colors;
 	}
 
@@ -213,53 +223,70 @@ public class GameManager extends Observable
 
 	public void startGame()
 	{
-		JOptionPane.showMessageDialog(mainFrame, "Dies ist das Seegebiet deines Gegners./nTreffer werden grün dargestellt./nFehlschüsse rot.");
+		setChanged();
+		notifyObservers();
+		mainFrame
+			.showMessage("Dies ist das Seegebiet deines Gegners.\nTreffer werden grün dargestellt.\nFehlschüsse rot.");
 		nextTurn();
 		fireAtWill();
 	}
 
-	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) {
-		try {
-			activePlayer.putShipOnSeamap(ship,coords,dir);
-		} catch (IllegalShipPlacementException e) {
-			JOptionPane.showMessageDialog(mainFrame, e.getMessage());
-		}
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
+	{
+		activePlayer.putShipOnSeamap(ship, coords, dir);
+		setChanged();
+		notifyObservers();
+
 	}
 
-	public void showConfFrame() {
-		
-		this.confFrame = new ConfFrame(this, mainFrame);
-	}
-	
-	
-	private void createShipComponent(){
-		Dimension size = new Dimension(500, 500);
-		shipComponent = new ShipComponent(this, size );
-		shipComponent.setLocation(3, 50);
-	}
-
-	public boolean bothPlayerPlacedTheirShips() {
+	public boolean bothPlayerPlacedTheirShips()
+	{
 
 		//TODO: Muss smarter gemacht werden 
-		
-		if(activePlayer == playerTwo)
+
+		if (activePlayer == playerTwo)
 		{
 			return true;
 		}
 		return false;
 	}
-	
-	private void createShipPlacementComponent()
+
+	public Color[][] getViewOfCurrrentPlayersOwnShips()
 	{
-		this.shipPlacementComponent = new ShipPlacementComponent(this, new Dimension(800,800));
+		ShipPart[][] shipParts = activePlayer.getSeamap().getShipParts();
+		int seamapSize = shipParts.length;
+
+		Color[][] colors = new Color[seamapSize][seamapSize];
+
+		for (int x = 0; x < seamapSize; x++)
+		{
+
+			for (int y = 0; y < seamapSize; y++)
+			{
+
+				if (shipParts[x][y] == null)
+				{
+					colors[x][y] = Color.blue;
+				}
+				else
+				{
+					if (shipParts[x][y].isIntact())
+					{
+						colors[x][y] = Color.GREEN;
+					}
+					else
+					{
+						colors[x][y] = Color.RED;
+					}
+				}
+			}
+		}
+		return colors;
 	}
 
-	public void showShipPlacementFrame() {
-		playerOne.setName(confFrame.getNameForPlayerOne());
-		playerTwo.setName(confFrame.getNameForPlayerTwo());
-		createShipPlacementComponent();
-		this.shipPlacementFrame = new ShipPlacementFrame(mainFrame, shipPlacementComponent);
-		
+	public MainFrame getMainFrame()
+	{
+		return mainFrame;
 	}
 
 }

@@ -15,9 +15,7 @@ import de.fh.swt.schiffeversenken.controller.GameManager;
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
 import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
-import de.fh.swt.schiffeversenken.data.Seamap;
 import de.fh.swt.schiffeversenken.data.Ship;
-import de.fh.swt.schiffeversenken.data.ShipPart;
 
 public class ShipPlacementComponent extends JComponent implements Observer
 {
@@ -26,14 +24,16 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	private int cellSize = 30;
 	private int spaceBetweenCells = 5;
 	private int seamapSize = 12;
-	private ShipPart[][] shipParts;
+	private Color[][] colors;
 	private GameManager gameManager;
-	
-	public ShipPlacementComponent(GameManager gameManager, Dimension size)
-	{   
+	private ShipPlacementFrame shipPlacementFrame;
+
+	public ShipPlacementComponent(ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size)
+	{
 		this.gameManager = gameManager;
-		this.shipParts = gameManager.getPlayerOne().getSeamap().getShipParts();
-		seamapSize = shipParts.length;
+		this.gameManager.addObserver(this);
+		this.shipPlacementFrame = shipPlacementFrame;
+		colors = gameManager.getViewOfCurrrentPlayersOwnShips();
 		configure(size);
 	}
 
@@ -42,23 +42,12 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	{
 		super.paint(g);
 		cellSize = (int) calculateCellSize(seamapSize, seamapSize);
-		shipParts = gameManager.getActivePlayer().getSeamap().getShipParts();
-		
+
 		for (int x = 0; x < seamapSize; x++)
 		{
-
 			for (int y = 0; y < seamapSize; y++)
 			{
-				
-			
-				if (shipParts[x][y] == null)
-				{
-					g.setColor(Color.blue);
-				}
-				else
-				{
-					g.setColor(Color.GREEN);
-				}
+				g.setColor(colors[x][y]);
 				g.fillRect(x * (cellSize + spaceBetweenCells), y * (cellSize + spaceBetweenCells), cellSize, cellSize);
 			}
 		}
@@ -76,17 +65,17 @@ public class ShipPlacementComponent extends JComponent implements Observer
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-
 				{
 					super.mouseClicked(e);
-					int x = ((int) e.getLocationOnScreen().getX() - getLocationOnScreen().x) / cellSize;
-					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y) / cellSize;
+					int x = ((int) e.getLocationOnScreen().getX() - getLocationOnScreen().x)
+						/ (cellSize + spaceBetweenCells);
+					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
+						/ (cellSize + spaceBetweenCells);
 
 					System.out.println("SHIPLACEMENT: x = " + x + " ..... y = " + y);
 
 					placeShip(x, y);
 				}
-
 			}
 		});
 	}
@@ -94,29 +83,36 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	public void placeShip(int x, int y)
 	{
 		Ship ship = null;
-		ShipPlacementFrame shipPlacementFrame = gameManager.getShipPlacementFrame();
-		
+
 		try
 		{
-			ship = (Ship) shipPlacementFrame .getShipBox().getSelectedItem();
-			Direction dir = null;
-			
-			if (shipPlacementFrame.getDown().isSelected())
-			{
-				dir = Direction.DOWN;
-			}
-			else
-			{
-				dir = Direction.RIGHT;
-			}
-
-			shipPlacementFrame.putShipOnSeamap(ship, new Coords(x, y), dir);
-			shipPlacementFrame.getShipBox().removeItem(shipPlacementFrame.getShipBox().getSelectedItem());
+			ship = (Ship) getShipPlacementFrame().getShipBox().getSelectedItem();
 		}
 		catch (NullPointerException e)
-		{	
+		{
 			JOptionPane.showMessageDialog(this, "Dieser Spieler hat bereits alle Schiffe platziert");
 		}
+		Direction dir = null;
+
+		if (getShipPlacementFrame().getDown().isSelected())
+		{
+			dir = Direction.DOWN;
+		}
+		else
+		{
+			dir = Direction.RIGHT;
+		}
+
+		try
+		{
+			getShipPlacementFrame().putShipOnSeamap(ship, new Coords(x, y), dir);
+			getShipPlacementFrame().getShipBox().removeItem(getShipPlacementFrame().getShipBox().getSelectedItem());
+		}
+		catch (IllegalShipPlacementException e)
+		{
+			JOptionPane.showMessageDialog(getShipPlacementFrame(), e.getMessage());
+		}
+
 	}
 
 	private double calculateCellSize(double height, double width)
@@ -137,10 +133,15 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	}
 
 	public void update(Observable o, Object arg)
-	{	this.shipParts = (ShipPart[][]) arg;
+	{
+		System.out.println("update Placement");
+		colors = gameManager.getViewOfCurrrentPlayersOwnShips();
 		repaint();
 	}
-	
 
+	public ShipPlacementFrame getShipPlacementFrame()
+	{
+		return shipPlacementFrame;
+	}
 
 }

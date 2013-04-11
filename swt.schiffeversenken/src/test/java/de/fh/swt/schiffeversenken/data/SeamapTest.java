@@ -21,32 +21,28 @@ public class SeamapTest
 	public void ShouldPlaceShipAtGivenCoordsAndRetrieveItAfterwards() throws IllegalShipPlacementException
 	{
 		Cruiser cruiser = new Cruiser("Dose");
-		Coords fore = new Coords(size, 0);
+		Coords fore = new Coords(0, 11);
 		seamap.putShipOnSeamap(cruiser, fore, Direction.RIGHT);
 		seamap.getShipParts();
-		seamap = new Seamap(size);
 	}
 
-	@Test
+	@Test(expected = IllegalShipPlacementException.class)
 	public void shouldNOTPlaceTheShipAtGivenCoordsBecauseOutofBounds() throws IllegalShipPlacementException
 	{
 		Cruiser cruiser = new Cruiser("Kreuzer 1");
 		Coords coords = new Coords(5, size);
 		seamap.putShipOnSeamap(cruiser, coords, Direction.DOWN);
-		Assert.assertNull(seamap.getShipPart(coords));
-		seamap = new Seamap(size);
 	}
 
 	@Test
 	public void shouldPlaceTheShipAtGivenCoords() throws IllegalShipPlacementException
 	{
 		Cruiser cruiser = new Cruiser("Kreuzer 2");
-		Coords coords = new Coords(2, 0);
+		Coords coords = new Coords(5, 5);
 		seamap.putShipOnSeamap(cruiser, coords, Direction.DOWN);
-		Assert.assertNotNull(seamap.getShipPart(coords));
-		Assert.assertNotNull(seamap.getShipPart(new Coords(2, 1)));
-		Assert.assertNotNull(seamap.getShipPart(new Coords(2, 2)));
-		seamap = new Seamap(size);
+		Assert.assertEquals(cruiser.getShipParts()[0], seamap.getShipPart(coords));
+		Assert.assertEquals(cruiser.getShipParts()[1], seamap.getShipPart(new Coords(5, 6)));
+		Assert.assertEquals(cruiser.getShipParts()[2], seamap.getShipPart(new Coords(5, 7)));
 	}
 
 	@Test(expected = IllegalShipPlacementException.class)
@@ -59,8 +55,8 @@ public class SeamapTest
 		Coords coords = new Coords(2, 0);
 		seamap.putShipOnSeamap(cruiserIceberg, coords, Direction.RIGHT);
 		seamap.putShipOnSeamap(cruiser, coords, Direction.RIGHT);
-		Assert.assertNull(seamap.getShipPart(coords));
-		seamap = new Seamap(size);
+		Assert.assertNotNull(seamap.getShipPart(coords));
+		Assert.assertNotEquals(cruiserIceberg, seamap.getShipPart(coords));
 	}
 
 	@Test(expected = IllegalShipPlacementException.class)

@@ -13,11 +13,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import de.fh.swt.schiffeversenken.controller.GameManager;
-import de.fh.swt.schiffeversenken.controller.Player;
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
+import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
 import de.fh.swt.schiffeversenken.data.Ship;
-import de.fh.swt.schiffeversenken.data.ShipPart;
 
 public class MainFrame extends JFrame
 {
@@ -25,21 +24,29 @@ public class MainFrame extends JFrame
 	private JMenuBar jMenuBar = new JMenuBar();
 	private GameManager gameManager;
 	private ShipComponent shipComponent;
+	private ShipPlacementFrame shipPlacementFrame;
+	private ConfFrame confFrame;
 
-	public MainFrame(GameManager spielleiter, ShipComponent shipComponent)
+	public MainFrame(GameManager gameManager)
 	{
 		super("Schiffe versenken");
-		this.setGameManager(spielleiter);
-		this.shipComponent = shipComponent;
+		this.setGameManager(gameManager);
 		configureFrame();
+		configureShipComponent();
 		configureMenu();
 		configurePane();
 		pack();
 	}
 
+	private void configureShipComponent()
+	{
+		this.shipComponent = new ShipComponent(gameManager, new Dimension(600, 600));
+		shipComponent.setLocation(2, 50);
+
+	}
+
 	private void configurePane()
 	{
-		
 		getContentPane().add(shipComponent);
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout());
@@ -75,7 +82,7 @@ public class MainFrame extends JFrame
 
 			public void actionPerformed(ActionEvent e)
 			{
-				gameManager.showConfFrame();
+				showConfFrame();
 			}
 		});
 		JMenuItem menuItemBeenden = new JMenuItem("Beenden");
@@ -93,6 +100,11 @@ public class MainFrame extends JFrame
 		jMenuBar.setVisible(true);
 	}
 
+	public void showConfFrame()
+	{
+		this.confFrame = new ConfFrame(gameManager, this);
+	}
+
 	public GameManager getGameManager()
 	{
 		return gameManager;
@@ -103,12 +115,21 @@ public class MainFrame extends JFrame
 		this.gameManager = gameManager;
 	}
 
-	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) {
-		gameManager.putShipOnSeamap(ship,  coords,  dir);
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
+	{
+		gameManager.putShipOnSeamap(ship, coords, dir);
 	}
 
-	public void showShipPlacementFrame() {
-		gameManager.showShipPlacementFrame();
+	public void showShipPlacementFrame()
+	{
+		gameManager.getPlayerOne().setName(confFrame.getNameForPlayerOne());
+		gameManager.getPlayerTwo().setName(confFrame.getNameForPlayerTwo());
+		this.shipPlacementFrame = new ShipPlacementFrame(this);
+	}
+
+	public ShipPlacementFrame getShipPlacementFrame()
+	{
+		return shipPlacementFrame;
 	}
 
 }

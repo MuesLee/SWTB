@@ -33,56 +33,71 @@ public class Seamap extends Observable
 			throw new IllegalShipPlacementException("Kein Schiff ausgewählt!");
 		}
 
-		int modX = 1, modY = 1;
-
+		/**
+		 * Falls das Schiff nach unten ausgerichtet ist, wird x nicht erhöht und nur y verändert,
+		 * weshalb der X-Startwert aus der Variablen fore genommen werden soll Was das bringt? Es
+		 * erspart eine weitere for-Schleife. Keine Angst, es gibt für diese Methode diverse Tests^^
+		 * 
+		 * **/
 		try
 		{
-
-			if (direction == Direction.DOWN)
+			iterateOverShipPartsAndSetNewValues(fore, direction, ship.getShipParts());
+		}
+		catch (IllegalShipPlacementException e)
+		{
+			try
 			{
-				/**
-				 * Falls das Schiff nach unten ausgerichtet ist, wird x nicht erhöht und nur y
-				 * verändert, weshalb der X-Startwert aus der Variablen fore genommen werden soll
-				 * Was das bringt? Es erspart eine weitere for-Schleife Keine Angst, es gibt für
-				 * diese Methode diverse Tests^^
-				 */
-				modX = 0;
-				modY = 1;
+				removeShipParts(fore, direction, e.getFailureAtShipSegmentNumber());
 			}
-			else
+			catch (IllegalShipPlacementException e2)
 			{
-				//s.o. nur umgekehrt
-				modX = 1;
-				modY = 0;
 			}
+			throw e;
+		}
 
-			for (int startwert = (fore.getX() * modX) + (fore.getY() * modY), i = 0; startwert < ship.getShipParts().length; i++, startwert++)
+	}
+
+	private void removeShipParts(Coords fore, Direction direction, int part) throws IllegalShipPlacementException
+	{
+		ShipPart[] shipPartsToDelete = new ShipPart[part];
+
+		iterateOverShipPartsAndSetNewValues(fore, direction, shipPartsToDelete);
+	}
+
+	private void iterateOverShipPartsAndSetNewValues(Coords fore, Direction direction, ShipPart[] newValues)
+		throws IllegalShipPlacementException
+	{
+
+		for (int startwert = (fore.getX() * direction.getModX()) + (fore.getY() * direction.getModY()), segment = 0; segment < newValues.length; segment++, startwert++)
+		{
+			Coords coords = new Coords(((direction.getModX() * startwert) + (fore.getX() * direction.getModY())),
+				((direction.getModX() * fore.getY()) + (startwert * direction.getModY())));
+
+			try
 			{
-
-				ShipPart shipPart = shipParts[(modX * startwert) + (fore.getX() * modY)][(modX * fore.getY())
-					+ (startwert * modY)];
-
-				if (shipPart == null)
+				if (legitShipPlacement(coords, newValues[segment]))
 				{
-					shipParts[(modX * startwert) + (fore.getX() * modY)][(modX * fore.getY()) + (startwert * modY)] = ship
-						.getShipParts()[i];
-					setChanged();
-					notifyObservers(shipParts);
+
+					shipParts[(direction.getModX() * startwert) + (fore.getX() * direction.getModY())][(direction
+						.getModX() * fore.getY()) + (startwert * direction.getModY())] = newValues[segment];
+
 				}
 				else
 				{
-					throw new IllegalShipPlacementException("Schiff konnte nicht platziert werden. Das Schiff "
-						+ shipPart.getShip().getName() + " ist im Weg!");
+					throw new IllegalShipPlacementException(
+						"Ungültige Positionierung.\nSchiffe dürfen nicht aneinander angrenzen oder übereinander liegen",
+						segment);
 				}
+			}
 
+			catch (ArrayIndexOutOfBoundsException a)
+			{
+				throw new IllegalShipPlacementException(
+					"Das Schiff ragte über den Rand der Welt und wäre herunter gefallen, hätten wir nicht so ein tolles Exceptionhandling",
+					segment);
 			}
 		}
 
-		catch (ArrayIndexOutOfBoundsException a)
-		{
-			throw new IllegalShipPlacementException(
-				"Das Schiff ragte über den Rand der Welt und wäre herunter gefallen, hätten wir nicht so ein tolles Exceptionhandling");
-		}
 	}
 
 	public ShipPart getShipPart(Coords coords)
@@ -96,6 +111,59 @@ public class Seamap extends Observable
 		{
 			return null;
 		}
+	}
+
+	private boolean legitShipPlacement(Coords coords, ShipPart shipPart)
+	{
+		if (theseCoordsAndSurroundingCoordsAreFree(coords, shipPart))
+		{
+			return true;
+		}
+
+		return false;
+
+	}
+
+	private boolean theseCoordsAndSurroundingCoordsAreFree(Coords coords, ShipPart shipPartToPlace)
+	{
+
+		for (int x = -1; x < 2; x++)
+		{
+			for (int y = -1; y < 2; y++)
+			{
+				ShipPart excistingShipPart = null;
+				try
+				{
+					excistingShipPart = shipParts[coords.getX() + x][coords.getY() + y];
+				}
+				catch (ArrayIndexOutOfBoundsException e)
+				{
+
+				}
+				if (excistingShipPart != null)
+				{
+
+					if (!shipPartBelongsToGivenShip(shipPartToPlace, excistingShipPart.getShip()))
+					{
+						return false;
+					}
+				}
+			}
+
+		}
+		return true;
+	}
+
+	private boolean shipPartBelongsToGivenShip(ShipPart givenShipPart, Ship givenShip)
+	{
+
+		if (givenShipPart == null)
+		{
+			return true;
+		}
+
+		return givenShipPart.getShip().equals(givenShip);
+
 	}
 
 	public void setShipParts(ShipPart[][] coords)

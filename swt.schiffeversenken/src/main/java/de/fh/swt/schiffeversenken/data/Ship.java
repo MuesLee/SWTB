@@ -3,13 +3,13 @@ package de.fh.swt.schiffeversenken.data;
 public abstract class Ship
 {
 
-	private ShipPart[] shiptParts;
+	private ShipPart[] shipParts;
 	private String name;
 	protected int amountOfParts = 1;
 
 	public boolean isIntact()
 	{
-		for (ShipPart s : shiptParts)
+		for (ShipPart s : shipParts)
 		{
 			if (s.isIntact())
 			{
@@ -28,21 +28,21 @@ public abstract class Ship
 
 	private void initiate()
 	{
-		this.shiptParts = new ShipPart[amountOfParts];
+		this.shipParts = new ShipPart[amountOfParts];
 		for (int i = 0; i < amountOfParts; i++)
 		{
-			shiptParts[i] = new ShipPart(this);
+			shipParts[i] = new ShipPart(this);
 		}
 	}
 
 	public ShipPart[] getShipParts()
 	{
-		return shiptParts;
+		return shipParts;
 	}
 
 	public void setShipParts(ShipPart[] schiffsteile)
 	{
-		this.shiptParts = schiffsteile;
+		this.shipParts = schiffsteile;
 	}
 
 	public String getName()

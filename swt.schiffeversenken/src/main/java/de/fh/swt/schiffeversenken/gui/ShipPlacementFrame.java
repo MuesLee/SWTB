@@ -14,9 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
-import de.fh.swt.schiffeversenken.controller.Player;
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
+import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
 import de.fh.swt.schiffeversenken.data.Ship;
 
 public class ShipPlacementFrame extends JFrame
@@ -67,11 +67,12 @@ public class ShipPlacementFrame extends JFrame
 		return shipBox;
 	}
 
-	public ShipPlacementFrame(MainFrame mainFrame, ShipPlacementComponent shipPlacementComponent)
+	public ShipPlacementFrame(MainFrame mainFrame)
 	{
 		super("Platziere die Schiffe");
 		this.mainFrame = mainFrame;
-		this.shipPlacementComponent= shipPlacementComponent; 
+		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(), new Dimension(300,
+			300));
 		configureButtons();
 		configureShipBox();
 		configureFrame();
@@ -83,10 +84,10 @@ public class ShipPlacementFrame extends JFrame
 	private void addAllComps()
 	{
 		add(shipPlacementComponent, BorderLayout.CENTER);
-		add(down, BorderLayout.NORTH);
+		add(down, BorderLayout.SOUTH);
 		add(right, BorderLayout.LINE_END);
 		add(start, BorderLayout.WEST);
-		add(shipBox, BorderLayout.SOUTH);
+		add(shipBox, BorderLayout.NORTH);
 	}
 
 	private void configureButtons()
@@ -104,18 +105,21 @@ public class ShipPlacementFrame extends JFrame
 
 			public void actionPerformed(ActionEvent e)
 			{
-				if (shipBox.getItemCount()  != 0)
+				if (shipBox.getItemCount() != 0)
 				{
 					JOptionPane.showMessageDialog(shipPlacementComponent, "Es wurden noch nicht alle Schiffe gesetzt!");
 				}
-					
-				else{
-					if(mainFrame.getGameManager().bothPlayerPlacedTheirShips())
+
+				else
+				{
+					if (mainFrame.getGameManager().bothPlayerPlacedTheirShips())
 					{
 						mainFrame.getGameManager().startGame();
 						dispose();
 					}
-					else{
+					else
+					{
+						mainFrame.getGameManager().notifyObservers();
 						mainFrame.getGameManager().nextTurn();
 						fillShipBox();
 					}
@@ -134,7 +138,8 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
-	private void fillShipBox() {
+	private void fillShipBox()
+	{
 		List<Ship> ships = mainFrame.getGameManager().getActivePlayer().getShips();
 		for (Ship s : ships)
 		{
@@ -144,7 +149,7 @@ public class ShipPlacementFrame extends JFrame
 
 	private void configureFrame()
 	{
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(8, 8));
 		Dimension size = new Dimension(700, 700);
 		setSize(size);
 		setPreferredSize(size);
@@ -157,7 +162,8 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
-	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) {
-		mainFrame.putShipOnSeamap(ship,  coords,  dir);		
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
+	{
+		mainFrame.putShipOnSeamap(ship, coords, dir);
 	}
 }

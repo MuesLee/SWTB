@@ -2,6 +2,7 @@ package de.fh.swt.schiffeversenken.data;
 
 import java.util.ArrayList;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,8 +30,15 @@ public class GameManagerTest
 	}
 
 	@Test
-	public void shotShouldMissShips()
+	public void testShotShouldMissShips()
 	{
-		gameManager.handleShot(new Shot(new Coords(0, 0), HitType.UNKNOWN));
+		gameManager.handleShot(new Coords(0, 0));
+	}
+
+	@Test
+	public void testNextTurn()
+	{
+		gameManager.nextTurn();
+		Assert.assertEquals(gameManager.getPlayerTwo(), gameManager.getActivePlayer());
 	}
 }
