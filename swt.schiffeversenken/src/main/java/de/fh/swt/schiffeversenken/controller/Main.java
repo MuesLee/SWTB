@@ -9,6 +9,6 @@ public class Main
 
 		GameManager gameManager = new GameManager();
 
-		gameManager.start();
+		gameManager.startUp();
 	}
 }

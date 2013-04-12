@@ -7,6 +7,7 @@ import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
 import de.fh.swt.schiffeversenken.data.HitType;
 import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
+import de.fh.swt.schiffeversenken.data.Player;
 import de.fh.swt.schiffeversenken.data.Ship;
 import de.fh.swt.schiffeversenken.data.ShipPart;
 import de.fh.swt.schiffeversenken.data.Shot;
@@ -29,13 +30,14 @@ public class GameManager extends Observable
 
 	private void initiate()
 	{
-		playerOne = new Player("Spieler 1", 12);
-		playerTwo = new Player("Spieler 2", 12);
+		int seamapSize = 12;
+		playerOne = new Player("Spieler 1", seamapSize);
+		playerTwo = new Player("Spieler 2", seamapSize);
 		activePlayer = playerOne;
 
 	}
 
-	public void start()
+	public void startUp()
 	{
 		mainFrame = new MainFrame(this);
 	}
@@ -102,13 +104,14 @@ public class GameManager extends Observable
 	private void endGame()
 	{
 		mainFrame.showMessage("Herzlichen Glückwunsch " + activePlayer.getName() + ",\nDu hast gewonnen!");
+		mainFrame.dispose();
 		resetGame();
 	}
 
 	private void resetGame()
 	{
 		initiate();
-		start();
+		startUp();
 	}
 
 	public void nextTurn()

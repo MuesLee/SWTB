@@ -100,7 +100,7 @@ public class ShipComponent extends JComponent implements Observer
 			tWidth = 1;
 		}
 
-		return Math.min(tHeight, tWidth);
+		return (Math.min(tHeight, tWidth)) - spaceBetweenCells;
 	}
 
 	public void update(Observable o, Object arg)

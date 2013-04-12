@@ -3,6 +3,7 @@ package de.fh.swt.schiffeversenken.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -14,9 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
-import de.fh.swt.schiffeversenken.data.Coords;
-import de.fh.swt.schiffeversenken.data.Direction;
-import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
 import de.fh.swt.schiffeversenken.data.Ship;
 
 public class ShipPlacementFrame extends JFrame
@@ -71,14 +69,20 @@ public class ShipPlacementFrame extends JFrame
 	{
 		super("Platziere die Schiffe");
 		this.mainFrame = mainFrame;
-		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(), new Dimension(300,
-			300));
+		configureComponent(mainFrame);
 		configureButtons();
 		configureShipBox();
 		configureFrame();
 		addAllComps();
 		pack();
 
+	}
+
+	private void configureComponent(MainFrame mainFrame)
+	{
+		double screenSizeFactor = 0.6;
+		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(),
+			getProperSizeByFactor(screenSizeFactor));
 	}
 
 	private void addAllComps()
@@ -114,6 +118,7 @@ public class ShipPlacementFrame extends JFrame
 				{
 					if (mainFrame.getGameManager().bothPlayerPlacedTheirShips())
 					{
+						setVisible(false);
 						mainFrame.getGameManager().startGame();
 						dispose();
 					}
@@ -138,6 +143,13 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
+	private Dimension getProperSizeByFactor(double screenSizeFactor)
+	{
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		size.setSize(size.getHeight() * screenSizeFactor, size.getHeight() * screenSizeFactor);
+		return size;
+	}
+
 	private void fillShipBox()
 	{
 		List<Ship> ships = mainFrame.getGameManager().getActivePlayer().getShips();
@@ -149,21 +161,17 @@ public class ShipPlacementFrame extends JFrame
 
 	private void configureFrame()
 	{
+		double screenSizeFactor = 0.8;
 		setLayout(new BorderLayout(8, 8));
-		Dimension size = new Dimension(700, 700);
+		Dimension size = getProperSizeByFactor(screenSizeFactor);
 		setSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
-		setResizable(false);
+		setResizable(true);
 		setBackground(Color.DARK_GRAY);
 		setLocationRelativeTo(mainFrame);
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-	}
-
-	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
-	{
-		mainFrame.putShipOnSeamap(ship, coords, dir);
 	}
 }

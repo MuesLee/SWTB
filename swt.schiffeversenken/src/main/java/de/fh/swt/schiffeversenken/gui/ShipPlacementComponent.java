@@ -105,7 +105,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 
 		try
 		{
-			getShipPlacementFrame().putShipOnSeamap(ship, new Coords(x, y), dir);
+			gameManager.putShipOnSeamap(ship, new Coords(x, y), dir);
 			getShipPlacementFrame().getShipBox().removeItem(getShipPlacementFrame().getShipBox().getSelectedItem());
 		}
 		catch (IllegalShipPlacementException e)
@@ -129,7 +129,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 			tWidth = 1;
 		}
 
-		return Math.min(tHeight, tWidth);
+		return (Math.min(tHeight, tWidth)) - spaceBetweenCells;
 	}
 
 	public void update(Observable o, Object arg)

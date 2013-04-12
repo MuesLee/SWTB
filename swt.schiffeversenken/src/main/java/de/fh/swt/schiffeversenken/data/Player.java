@@ -1,20 +1,10 @@
-package de.fh.swt.schiffeversenken.controller;
+package de.fh.swt.schiffeversenken.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.fh.swt.schiffeversenken.data.Battleship;
-import de.fh.swt.schiffeversenken.data.Coords;
-import de.fh.swt.schiffeversenken.data.Cruiser;
-import de.fh.swt.schiffeversenken.data.Destroyer;
-import de.fh.swt.schiffeversenken.data.Direction;
-import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
-import de.fh.swt.schiffeversenken.data.Seamap;
-import de.fh.swt.schiffeversenken.data.Ship;
-import de.fh.swt.schiffeversenken.data.Shot;
-import de.fh.swt.schiffeversenken.data.Submarine;
 
 public class Player
 {
@@ -45,6 +35,12 @@ public class Player
 		this.shots = new HashSet<Shot>();
 		this.ships = new ArrayList<Ship>();
 		this.seamap = new Seamap(seamapSize);
+		fillShipList();
+
+	}
+
+	private void fillShipList()
+	{
 		ships.add(new Battleship("Schlachtschiff"));
 		ships.add(new Cruiser("Kreuzer 1"));
 		ships.add(new Cruiser("Kreuzer 2"));
@@ -55,7 +51,6 @@ public class Player
 		ships.add(new Submarine("U-Boot 2"));
 		ships.add(new Submarine("U-Boot 3"));
 		ships.add(new Submarine("U-Boot 4"));
-
 	}
 
 	public List<Ship> getShips()
