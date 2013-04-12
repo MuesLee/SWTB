@@ -45,7 +45,7 @@ public class MainFrame extends JFrame
 
 	private void configureInfoPanel()
 	{
-
+		infoPanel = new InfoPanel();
 	}
 
 	private void configureShipComponent()
@@ -67,11 +67,11 @@ public class MainFrame extends JFrame
 	private void configurePane()
 	{
 		Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout(5, 5));
+		contentPane.setLayout(new BorderLayout());
 		contentPane.add(shipComponent, BorderLayout.CENTER);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.add(jMenuBar, BorderLayout.PAGE_START);
-		//contentPane.add(infoPanel, BorderLayout.EAST);
+		contentPane.add(infoPanel, BorderLayout.EAST);
 	}
 
 	private void configureFrame()
