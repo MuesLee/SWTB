@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Toolkit;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +38,7 @@ public class InfoPanel extends JPanel
 
 	private void configurePanel()
 	{
-		Dimension properSizeByFactor = getProperSizeByFactor(0.2);
+		Dimension properSizeByFactor = GUIHelper.getProperSizeRelativeToScreensize(0.2);
 		setSize(properSizeByFactor);
 		setPreferredSize(properSizeByFactor);
 		setMaximumSize(properSizeByFactor);
@@ -48,7 +47,7 @@ public class InfoPanel extends JPanel
 
 	private void configureCanvas()
 	{
-		Dimension size = getProperSizeByFactor(0.05);
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.05);
 
 		infoHit = new Canvas();
 		infoMiss = new Canvas();
@@ -60,16 +59,9 @@ public class InfoPanel extends JPanel
 		infoMiss.setSize(size);
 	}
 
-	private Dimension getProperSizeByFactor(double screenSizeFactor)
-	{
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		size.setSize(size.getHeight() * screenSizeFactor, size.getHeight() * screenSizeFactor);
-		return size;
-	}
-
 	private void configureLabels()
 	{
-		Dimension size = getProperSizeByFactor(0.02);
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.02);
 
 		labelHit = new JLabel("Treffer");
 		labelMiss = new JLabel("kein Treffer");

@@ -3,7 +3,6 @@ package de.fh.swt.schiffeversenken.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -75,14 +74,12 @@ public class ShipPlacementFrame extends JFrame
 		configureFrame();
 		addAllComps();
 		pack();
-
 	}
 
 	private void configureComponent(MainFrame mainFrame)
 	{
-		double screenSizeFactor = 0.6;
 		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(),
-			getProperSizeByFactor(screenSizeFactor));
+			GUIHelper.getProperSizeRelativeToScreensize(0.6));
 	}
 
 	private void addAllComps()
@@ -143,13 +140,6 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
-	private Dimension getProperSizeByFactor(double screenSizeFactor)
-	{
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		size.setSize(size.getHeight() * screenSizeFactor, size.getHeight() * screenSizeFactor);
-		return size;
-	}
-
 	private void fillShipBox()
 	{
 		List<Ship> ships = mainFrame.getGameManager().getActivePlayer().getShips();
@@ -163,7 +153,7 @@ public class ShipPlacementFrame extends JFrame
 	{
 		double screenSizeFactor = 0.8;
 		setLayout(new BorderLayout(8, 8));
-		Dimension size = getProperSizeByFactor(screenSizeFactor);
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
 		setSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
@@ -172,6 +162,6 @@ public class ShipPlacementFrame extends JFrame
 		setLocationRelativeTo(mainFrame);
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
 	}
+
 }

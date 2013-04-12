@@ -1,8 +1,7 @@
 package de.fh.swt.schiffeversenken.data;
 
-import java.util.Observable;
 
-public class Seamap extends Observable
+public class Seamap
 {
 
 	private ShipPart[][] shipParts;

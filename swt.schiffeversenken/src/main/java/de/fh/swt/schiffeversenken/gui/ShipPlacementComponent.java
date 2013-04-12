@@ -72,8 +72,6 @@ public class ShipPlacementComponent extends JComponent implements Observer
 					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
 						/ (cellSize + spaceBetweenCells);
 
-					System.out.println("SHIPLACEMENT: x = " + x + " ..... y = " + y);
-
 					placeShip(x, y);
 				}
 			}
@@ -134,7 +132,6 @@ public class ShipPlacementComponent extends JComponent implements Observer
 
 	public void update(Observable o, Object arg)
 	{
-		System.out.println("update Placement");
 		colors = gameManager.getViewOfCurrrentPlayersOwnShips();
 		repaint();
 	}

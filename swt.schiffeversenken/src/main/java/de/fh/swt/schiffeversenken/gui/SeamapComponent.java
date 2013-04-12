@@ -13,7 +13,7 @@ import javax.swing.JComponent;
 import de.fh.swt.schiffeversenken.controller.GameManager;
 import de.fh.swt.schiffeversenken.data.Coords;
 
-public class ShipComponent extends JComponent implements Observer
+public class SeamapComponent extends JComponent implements Observer
 {
 
 	private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class ShipComponent extends JComponent implements Observer
 	private int seamapSize = 12;
 	private Color[][] currentViewOfActivePlayer;
 
-	public ShipComponent(GameManager gameManager, Dimension size)
+	public SeamapComponent(GameManager gameManager, Dimension size)
 	{
 
 		this.gameManager = gameManager;
@@ -72,8 +72,6 @@ public class ShipComponent extends JComponent implements Observer
 					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
 						/ (cellSize + spaceBetweenCells);
 
-					System.out.println("x = " + x + " ..... y = " + y);
-
 					makeShot(x, y);
 				}
 
@@ -105,7 +103,6 @@ public class ShipComponent extends JComponent implements Observer
 
 	public void update(Observable o, Object arg)
 	{
-		System.out.println("update ShipComponent");
 		currentViewOfActivePlayer = gameManager.getCurrentViewOfActivePlayer();
 		repaint();
 	}

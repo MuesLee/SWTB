@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,9 +20,9 @@ public class MainFrame extends JFrame
 
 	private JMenuBar jMenuBar = new JMenuBar();
 	private GameManager gameManager;
-	private ShipComponent shipComponent;
+	private SeamapComponent seamapComponent;
 	private ShipPlacementFrame shipPlacementFrame;
-	private ConfFrame confFrame;
+	private ConfigurationFrame confFrame;
 	private InfoPanel infoPanel;
 
 	public MainFrame(GameManager gameManager)
@@ -51,34 +50,27 @@ public class MainFrame extends JFrame
 	private void configureShipComponent()
 	{
 		double screenSizeFactor = 0.6;
-		Dimension size = getProperSizeByFactor(screenSizeFactor);
-		this.shipComponent = new ShipComponent(gameManager, new Dimension(size));
-		shipComponent.setVisible(false);
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
+		this.seamapComponent = new SeamapComponent(gameManager, new Dimension(size));
+		seamapComponent.setVisible(false);
 
-	}
-
-	private Dimension getProperSizeByFactor(double screenSizeFactor)
-	{
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		size.setSize(size.getHeight() * screenSizeFactor, size.getHeight() * screenSizeFactor);
-		return size;
 	}
 
 	private void configurePane()
 	{
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.add(shipComponent, BorderLayout.CENTER);
+		contentPane.add(seamapComponent, BorderLayout.CENTER);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.add(jMenuBar, BorderLayout.PAGE_START);
-		contentPane.add(infoPanel, BorderLayout.EAST);
+		//contentPane.add(infoPanel, BorderLayout.EAST);
 	}
 
 	private void configureFrame()
 	{
 		double screenSizeFactor = 0.8;
 		setLayout(new BorderLayout());
-		Dimension size = getProperSizeByFactor(screenSizeFactor);
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Schiffe versenken");
 		setSize(size);
@@ -125,7 +117,7 @@ public class MainFrame extends JFrame
 
 	public void showConfFrame()
 	{
-		this.confFrame = new ConfFrame(gameManager, this);
+		this.confFrame = new ConfigurationFrame(this);
 	}
 
 	public GameManager getGameManager()
@@ -147,7 +139,7 @@ public class MainFrame extends JFrame
 
 	public void showShipComponent()
 	{
-		shipComponent.setVisible(true);
+		seamapComponent.setVisible(true);
 	}
 
 	public ShipPlacementFrame getShipPlacementFrame()

@@ -44,7 +44,7 @@ public class GameManager extends Observable
 
 	public void handleShot(Coords coords)
 	{
-		Shot shot = new Shot(coords, HitType.UNKNOWN);
+		HitType hitType = HitType.UNKNOWN;
 
 		ceaseFire();
 
@@ -52,18 +52,18 @@ public class GameManager extends Observable
 
 		if ((shipPart == null))
 		{
-			shot.setHit(HitType.NOHIT);
+			hitType = HitType.NOHIT;
 		}
 		else
 		{
 			if (!shipPart.isIntact())
 			{
-				shot.setHit(HitType.HITAGAIN);
+				hitType = HitType.HITAGAIN;
 			}
 			else
 			{
 				setHit(shipPart);
-				shot.setHit(HitType.HIT);
+				hitType = HitType.HIT;
 				if (!shipPart.getShip().isIntact())
 				{
 					mainFrame.showMessage(shipPart.getShip().getName() + " wurde versenkt");
@@ -71,6 +71,7 @@ public class GameManager extends Observable
 			}
 
 		}
+		Shot shot = new Shot(coords, hitType);
 		storeShot(shot);
 		setChanged();
 		notifyObservers();
@@ -81,6 +82,15 @@ public class GameManager extends Observable
 			{
 				case NOHIT:
 				case HITAGAIN:
+					try
+					{
+						Thread.sleep(750);
+					}
+					catch (InterruptedException e)
+					{
+						// not gonna happen
+						System.out.println("happened -.-");
+					}
 					nextTurn();
 				break;
 				case HIT:
@@ -126,6 +136,7 @@ public class GameManager extends Observable
 		}
 		setChanged();
 		notifyObservers();
+
 		getMainFrame().showMessage(activePlayer.getName() + " ist nun am Zug!");
 	}
 

@@ -9,23 +9,18 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import de.fh.swt.schiffeversenken.controller.GameManager;
-
-public class ConfFrame extends JFrame
+public class ConfigurationFrame extends JFrame
 {
 
 	private JButton buttonStart;
 	private JButton buttonCancel;
 	private JTextField textNamePlayerOne;
 	private JTextField textNamePlayerTwo;
-	private GameManager spielleiter;
 	private MainFrame mainFrame;
-	private ShipPlacementFrame shipPlacementFrame;
 
-	public ConfFrame(GameManager spielleiter, MainFrame mainFrame)
+	public ConfigurationFrame(MainFrame mainFrame)
 	{
 
-		this.spielleiter = spielleiter;
 		this.mainFrame = mainFrame;
 
 		configureFrame();
@@ -37,7 +32,8 @@ public class ConfFrame extends JFrame
 
 	private void configureFrame()
 	{
-		Dimension size = new Dimension(400, 300);
+
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.4, 0.5);
 		setSize(size);
 		setLayout(new FlowLayout());
 		setPreferredSize(size);
@@ -90,6 +86,7 @@ public class ConfFrame extends JFrame
 	{
 		return textNamePlayerOne.getText().trim();
 	}
+
 	public String getNameForPlayerTwo()
 	{
 		return textNamePlayerTwo.getText().trim();

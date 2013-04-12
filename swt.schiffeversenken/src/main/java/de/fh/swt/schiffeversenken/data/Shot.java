@@ -1,5 +1,6 @@
 package de.fh.swt.schiffeversenken.data;
 
+
 public class Shot
 {
 
@@ -14,7 +15,6 @@ public class Shot
 
 	public Shot(Coords coords, HitType hit)
 	{
-		super();
 		this.coords = coords;
 		this.hit = hit;
 	}
