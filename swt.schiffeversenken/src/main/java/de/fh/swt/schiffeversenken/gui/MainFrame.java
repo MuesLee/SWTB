@@ -63,7 +63,7 @@ public class MainFrame extends JFrame
 		contentPane.add(seamapComponent, BorderLayout.CENTER);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.add(jMenuBar, BorderLayout.PAGE_START);
-		//contentPane.add(infoPanel, BorderLayout.EAST);
+		contentPane.add(infoPanel, BorderLayout.EAST);
 	}
 
 	private void configureFrame()

@@ -82,15 +82,6 @@ public class GameManager extends Observable
 			{
 				case NOHIT:
 				case HITAGAIN:
-					try
-					{
-						Thread.sleep(750);
-					}
-					catch (InterruptedException e)
-					{
-						// not gonna happen
-						System.out.println("happened -.-");
-					}
 					nextTurn();
 				break;
 				case HIT:
@@ -142,7 +133,6 @@ public class GameManager extends Observable
 
 	public Color[][] getCurrentViewOfActivePlayer()
 	{
-
 		Color[][] colors = new Color[activePlayer.getSeamap().getSize()][activePlayer.getSeamap().getSize()];
 		int size = getActivePlayer().getSeamap().getSize();
 
@@ -170,7 +160,6 @@ public class GameManager extends Observable
 					continue;
 			}
 		}
-
 		return colors;
 	}
 
@@ -206,7 +195,6 @@ public class GameManager extends Observable
 			return playerTwo;
 		}
 		return playerOne;
-
 	}
 
 	private void storeShot(Shot schuss)
