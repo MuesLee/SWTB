@@ -15,7 +15,7 @@ import de.fh.swt.schiffeversenken.gui.MainFrame;
 
 public class GameManager extends Observable
 {
-
+	private static GameManager instance;
 	private Player playerOne;
 	private Player playerTwo;
 	private Player activePlayer;
@@ -23,10 +23,19 @@ public class GameManager extends Observable
 
 	private boolean fireAtWill = false;
 
-	public GameManager()
+	private GameManager()
 	{
 		initiate();
 	}
+
+	
+	public static GameManager getManager() {
+		if (instance == null) {
+            instance = new GameManager();
+        }
+        return instance;
+	}
+
 
 	private void initiate()
 	{
