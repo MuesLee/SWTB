@@ -38,16 +38,21 @@ public class Player
 
 	private void fillShipList()
 	{
-		ships.add(new Battleship("Schlachtschiff"));
-		ships.add(new Cruiser("Kreuzer 1"));
-		ships.add(new Cruiser("Kreuzer 2"));
-		ships.add(new Destroyer("Zerstörer 1"));
-		ships.add(new Destroyer("Zerstörer 2"));
-		ships.add(new Destroyer("Zerstörer 3"));
-		ships.add(new Submarine("U-Boot 1"));
-		ships.add(new Submarine("U-Boot 2"));
-		ships.add(new Submarine("U-Boot 3"));
-		ships.add(new Submarine("U-Boot 4"));
+		ShipFactory bShipFactory = new BattleshipFactory();
+		ShipFactory cShipFactory = new CruiserFactory();
+		ShipFactory dShipFactory = new DestroyerFactory();
+		ShipFactory sShipFactory = new SubmarineFactory();
+
+		ships.add(bShipFactory.erzeugeSchiff("Schlachtschiff"));
+		ships.add(cShipFactory.erzeugeSchiff("Kreuzer 1"));
+		ships.add(cShipFactory.erzeugeSchiff("Kreuzer 2"));
+		ships.add(dShipFactory.erzeugeSchiff("Zerstörer 1"));
+		ships.add(dShipFactory.erzeugeSchiff("Zerstörer 2"));
+		ships.add(dShipFactory.erzeugeSchiff("Zerstörer 3"));
+		ships.add(sShipFactory.erzeugeSchiff("U-Boot 1"));
+		ships.add(sShipFactory.erzeugeSchiff("U-Boot 2"));
+		ships.add(sShipFactory.erzeugeSchiff("U-Boot 3"));
+		ships.add(sShipFactory.erzeugeSchiff("U-Boot 4"));
 	}
 
 	public List<Ship> getShips()
