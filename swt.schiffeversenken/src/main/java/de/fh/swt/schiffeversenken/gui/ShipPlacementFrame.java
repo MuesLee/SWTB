@@ -21,7 +21,7 @@ public class ShipPlacementFrame extends JFrame
 {
 
 	private MainFrame mainFrame;
-	private ShipPlacementComponent shipPlacementComponent;
+	private SeamapComponent shipPlacementComponent;
 
 	private JRadioButton down;
 	private JRadioButton right;
@@ -34,7 +34,7 @@ public class ShipPlacementFrame extends JFrame
 		return mainFrame;
 	}
 
-	public ShipPlacementComponent getShipPlacementComponent()
+	public SeamapComponent getShipPlacementComponent()
 	{
 		return shipPlacementComponent;
 	}
@@ -78,8 +78,8 @@ public class ShipPlacementFrame extends JFrame
 
 	private void configureComponent(MainFrame mainFrame)
 	{
-		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(),
-			GUIHelper.getProperSizeRelativeToScreensize(0.6));
+		this.shipPlacementComponent = new SeamapComponent(this, mainFrame.getGameManager(),
+			GUIHelper.getProperSizeRelativeToScreensize(0.6), false);
 	}
 
 	private void addAllComps()

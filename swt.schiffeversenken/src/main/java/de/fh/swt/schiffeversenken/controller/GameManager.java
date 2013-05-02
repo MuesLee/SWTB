@@ -29,7 +29,7 @@ public class GameManager extends Observable
 	}
 
 	
-	public static GameManager getManager() {
+	public static GameManager getInstance() {
 		if (instance == null) {
             instance = new GameManager();
         }

@@ -16,7 +16,7 @@ public class GameManagerTest
 	@Before
 	public void initiate()
 	{
-		this.gameManager = GameManager.getManager();
+		this.gameManager = GameManager.getInstance();
 
 		ArrayList<Ship> shipsPlayerOne = new ArrayList<Ship>();
 		ArrayList<Ship> shipsPlayerTwo = new ArrayList<Ship>();

@@ -51,7 +51,7 @@ public class MainFrame extends JFrame
 	{
 		double screenSizeFactor = 0.6;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
-		this.seamapComponent = new SeamapComponent(gameManager, new Dimension(size));
+		this.seamapComponent = new SeamapComponent(null, gameManager, new Dimension(size), true);
 		seamapComponent.setVisible(false);
 
 	}

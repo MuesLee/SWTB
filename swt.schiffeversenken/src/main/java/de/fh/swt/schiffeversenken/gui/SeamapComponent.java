@@ -9,10 +9,20 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import de.fh.swt.schiffeversenken.controller.GameManager;
 import de.fh.swt.schiffeversenken.data.Coords;
+import de.fh.swt.schiffeversenken.data.Direction;
+import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
+import de.fh.swt.schiffeversenken.data.Ship;
 
+/* 
+ * Implements the seamap in both ship-placing and shot-handling.
+ * Type defines the type of the seamap.
+ * false = ship placement
+ * true = sea map (shots etc.)
+ */
 public class SeamapComponent extends JComponent implements Observer
 {
 
@@ -22,15 +32,19 @@ public class SeamapComponent extends JComponent implements Observer
 	private int spaceBetweenCells = 5;
 	private int seamapSize = 12;
 	private Color[][] currentViewOfActivePlayer;
+	private ShipPlacementFrame shipPlacementFrame;
+	private boolean type;
 
-	public SeamapComponent(GameManager gameManager, Dimension size)
+	public SeamapComponent(ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size, boolean type)
 	{
 
 		this.gameManager = gameManager;
 		this.gameManager.addObserver(this);
+		this.shipPlacementFrame = shipPlacementFrame;
 		currentViewOfActivePlayer = gameManager.getCurrentViewOfActivePlayer();
 		seamapSize = currentViewOfActivePlayer.length;
-		configure(size);
+		this.type = type;
+		configure(size, type);
 	}
 
 	@Override
@@ -52,7 +66,7 @@ public class SeamapComponent extends JComponent implements Observer
 
 	}
 
-	private void configure(Dimension size)
+	private void configure(Dimension size, final boolean type)
 	{
 		setSize(size);
 		setPreferredSize(size);
@@ -63,17 +77,21 @@ public class SeamapComponent extends JComponent implements Observer
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-
-				if (gameManager.activePlayerHasThePermissionToStartTheApocalypse())
-				{
 					super.mouseClicked(e);
 					int x = ((int) e.getLocationOnScreen().getX() - getLocationOnScreen().x)
 						/ (cellSize + spaceBetweenCells);
 					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
 						/ (cellSize + spaceBetweenCells);
 
-					makeShot(x, y);
-				}
+					if (type){
+						if (gameManager.activePlayerHasThePermissionToStartTheApocalypse())
+						{
+						makeShot(x, y);
+						}
+					}
+					else {
+						placeShip(x, y);
+					}
 
 			}
 		});
@@ -82,6 +100,41 @@ public class SeamapComponent extends JComponent implements Observer
 	public void makeShot(int x, int y)
 	{
 		gameManager.handleShot(new Coords(x, y));
+	}
+	
+	public void placeShip(int x, int y)
+	{
+		Ship ship = null;
+
+		try
+		{
+			ship = (Ship) getShipPlacementFrame().getShipBox().getSelectedItem();
+		}
+		catch (NullPointerException e)
+		{
+			JOptionPane.showMessageDialog(this, "Dieser Spieler hat bereits alle Schiffe platziert");
+		}
+		Direction dir = null;
+
+		if (getShipPlacementFrame().getDown().isSelected())
+		{
+			dir = Direction.DOWN;
+		}
+		else
+		{
+			dir = Direction.RIGHT;
+		}
+
+		try
+		{
+			gameManager.putShipOnSeamap(ship, new Coords(x, y), dir);
+			getShipPlacementFrame().getShipBox().removeItem(getShipPlacementFrame().getShipBox().getSelectedItem());
+		}
+		catch (IllegalShipPlacementException e)
+		{
+			JOptionPane.showMessageDialog(getShipPlacementFrame(), e.getMessage());
+		}
+
 	}
 
 	private double calculateCellSize(double height, double width)
@@ -101,9 +154,18 @@ public class SeamapComponent extends JComponent implements Observer
 		return (Math.min(tHeight, tWidth)) - spaceBetweenCells;
 	}
 
+	public ShipPlacementFrame getShipPlacementFrame()
+	{
+		return shipPlacementFrame;
+	}
+	
 	public void update(Observable o, Object arg)
 	{
-		currentViewOfActivePlayer = gameManager.getCurrentViewOfActivePlayer();
+		if (type)
+			currentViewOfActivePlayer = gameManager.getCurrentViewOfActivePlayer();
+		else
+			currentViewOfActivePlayer = gameManager.getViewOfCurrrentPlayersOwnShips();
+			
 		repaint();
 	}
 
