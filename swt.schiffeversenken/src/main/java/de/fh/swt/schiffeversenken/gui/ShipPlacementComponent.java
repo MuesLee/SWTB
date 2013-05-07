@@ -17,13 +17,7 @@ import de.fh.swt.schiffeversenken.data.Direction;
 import de.fh.swt.schiffeversenken.data.IllegalShipPlacementException;
 import de.fh.swt.schiffeversenken.data.Ship;
 
-/* 
- * Implements the seamap in both ship-placing and shot-handling.
- * Type defines the type of the seamap.
- * false = ship placement
- * true = sea map (shots etc.)
- */
-public class SeamapComponent extends JComponent implements Observer
+public class ShipPlacementComponent extends JComponent implements Observer
 {
 
 	private static final long serialVersionUID = 1L;
@@ -33,17 +27,8 @@ public class SeamapComponent extends JComponent implements Observer
 	private int seamapSize = 12;
 	private Color[][] currentViewOfPlayer;
 	private ShipPlacementFrame shipPlacementFrame;
-	private boolean isPlayerOne;
 
-	public boolean isPlayerOne() {
-		return isPlayerOne;
-	}
-
-	public void setPlayerOne(boolean isPlayerOne) {
-		this.isPlayerOne = isPlayerOne;
-	}
-
-	public SeamapComponent(boolean isPlayerOne, ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size, boolean type)
+	public ShipPlacementComponent( ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size, boolean type)
 	{
 
 		this.gameManager = gameManager;
@@ -76,11 +61,7 @@ public class SeamapComponent extends JComponent implements Observer
 	
 	private Color[][] getViewOfPlayer()
 	{
-		if(isPlayerOne)
-		{
-			return gameManager.getCurrentViewOfPlayerOne();
-		}
-		return gameManager.getCurrentViewOfPlayerTwo();
+		return gameManager.getViewOfCurrrentPlayersOwnShips();
 	}
 
 	private void configure(Dimension size, final boolean type)
@@ -100,18 +81,59 @@ public class SeamapComponent extends JComponent implements Observer
 					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
 						/ (cellSize + spaceBetweenCells);
 
+					if (type){
 						if (gameManager.activePlayerHasThePermissionToStartTheApocalypse())
 						{
 						makeShot(x, y);
 						}
-					}});
-		}
+					}
+					else {
+						placeShip(x, y);
+					}
+
+			}
+		});
+	}
 
 	public void makeShot(int x, int y)
 	{
 		gameManager.handleShot(new Coords(x, y));
 	}
 	
+	public void placeShip(int x, int y)
+	{
+		Ship ship = null;
+
+		try
+		{
+			ship = (Ship) getShipPlacementFrame().getShipBox().getSelectedItem();
+		}
+		catch (NullPointerException e)
+		{
+			JOptionPane.showMessageDialog(this, "Dieser Spieler hat bereits alle Schiffe platziert");
+		}
+		Direction dir = null;
+
+		if (getShipPlacementFrame().getDown().isSelected())
+		{
+			dir = Direction.DOWN;
+		}
+		else
+		{
+			dir = Direction.RIGHT;
+		}
+
+		try
+		{
+			gameManager.putShipOnSeamap(ship, new Coords(x, y), dir);
+			getShipPlacementFrame().getShipBox().removeItem(getShipPlacementFrame().getShipBox().getSelectedItem());
+		}
+		catch (IllegalShipPlacementException e)
+		{
+			JOptionPane.showMessageDialog(getShipPlacementFrame(), e.getMessage());
+		}
+
+	}
 
 	private double calculateCellSize(double height, double width)
 	{

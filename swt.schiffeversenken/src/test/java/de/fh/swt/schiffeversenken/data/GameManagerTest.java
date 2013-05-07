@@ -29,16 +29,5 @@ public class GameManagerTest
 
 	}
 
-	@Test
-	public void testShotShouldMissShips()
-	{
-		gameManager.handleShot(new Coords(0, 0));
-	}
 
-	@Test
-	public void testNextTurn()
-	{
-		gameManager.nextTurn();
-		Assert.assertEquals(gameManager.getPlayerTwo(), gameManager.getActivePlayer());
-	}
 }

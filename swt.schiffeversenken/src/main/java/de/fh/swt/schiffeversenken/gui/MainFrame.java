@@ -20,10 +20,13 @@ public class MainFrame extends JFrame
 
 	private JMenuBar jMenuBar = new JMenuBar();
 	private GameManager gameManager;
-	private SeamapComponent seamapComponent;
+	private SeamapComponent seamapComponentOne;
 	private ShipPlacementFrame shipPlacementFrame;
 	private ConfigurationFrame confFrame;
 	private InfoPanel infoPanel;
+	private SeamapFrame framePlayerOne;
+	private SeamapFrame framePlayerTwo;
+	private SeamapComponent seamapComponentTwo;
 
 	public MainFrame(GameManager gameManager)
 	{
@@ -35,11 +38,17 @@ public class MainFrame extends JFrame
 	private void configure()
 	{
 		configureFrame();
-		configureShipComponent();
+		configureSeamapComponents();
 		configureMenu();
 		configureInfoPanel();
+		configureSeamapFrames();
 		configurePane();
 		pack();
+	}
+
+	private void configureSeamapFrames() {
+		framePlayerOne = new SeamapFrame(gameManager, seamapComponentOne, 1);
+		framePlayerTwo = new SeamapFrame(gameManager, seamapComponentTwo, 2);
 	}
 
 	private void configureInfoPanel()
@@ -47,12 +56,14 @@ public class MainFrame extends JFrame
 		infoPanel = new InfoPanel();
 	}
 
-	private void configureShipComponent()
+	private void configureSeamapComponents()
 	{
-		double screenSizeFactor = 0.6;
+		double screenSizeFactor = 0.8;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
-		this.seamapComponent = new SeamapComponent(null, gameManager, new Dimension(size), true);
-		seamapComponent.setVisible(false);
+		this.seamapComponentOne = new SeamapComponent(true,null, gameManager, size, true);
+		this.seamapComponentTwo= new SeamapComponent(false, null, gameManager, size, true);
+		seamapComponentOne.setVisible(false);
+		seamapComponentTwo.setVisible(false);
 
 	}
 
@@ -60,7 +71,6 @@ public class MainFrame extends JFrame
 	{
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.add(seamapComponent, BorderLayout.CENTER);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.add(jMenuBar, BorderLayout.PAGE_START);
 		contentPane.add(infoPanel, BorderLayout.EAST);
@@ -68,8 +78,8 @@ public class MainFrame extends JFrame
 
 	private void configureFrame()
 	{
-		double screenSizeFactor = 0.8;
 		setLayout(new BorderLayout());
+		double screenSizeFactor = 0.6;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Schiffe versenken");
@@ -139,7 +149,7 @@ public class MainFrame extends JFrame
 
 	public void showShipComponent()
 	{
-		seamapComponent.setVisible(true);
+		seamapComponentOne.setVisible(true);
 	}
 
 	public ShipPlacementFrame getShipPlacementFrame()

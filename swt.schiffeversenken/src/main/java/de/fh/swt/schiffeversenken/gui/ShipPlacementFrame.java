@@ -78,7 +78,7 @@ public class ShipPlacementFrame extends JFrame
 
 	private void configureComponent(MainFrame mainFrame)
 	{
-		this.shipPlacementComponent = new SeamapComponent(this, mainFrame.getGameManager(),
+		this.shipPlacementComponent = new SeamapComponent(true, this, mainFrame.getGameManager(),
 			GUIHelper.getProperSizeRelativeToScreensize(0.6), false);
 	}
 

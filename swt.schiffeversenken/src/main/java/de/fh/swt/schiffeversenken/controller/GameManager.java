@@ -83,7 +83,7 @@ public class GameManager extends Observable
 		Shot shot = new Shot(coords, hitType);
 		storeShot(shot);
 		setChanged();
-		notifyObservers();
+		notifyObservers(getActivePlayerID());
 
 		if (!getInactivePlayer().isDefeated())
 		{
@@ -105,6 +105,15 @@ public class GameManager extends Observable
 			endGame();
 		}
 	}
+
+	private int getActivePlayerID() {
+		if(activePlayer == playerOne)
+		{
+			return 1;
+		}
+		return 2;
+	}
+
 
 	private ShipPart getInactivePlayersShipPartForCoords(Coords coords)
 	{
@@ -135,15 +144,16 @@ public class GameManager extends Observable
 			activePlayer = playerOne;
 		}
 		setChanged();
-		notifyObservers();
+		notifyObservers(getActivePlayerID());
 
 		getMainFrame().showMessage(activePlayer.getName() + " ist nun am Zug!");
 	}
-
-	public Color[][] getCurrentViewOfActivePlayer()
+	
+	
+	private Color[][] getViewForPlayer(Player player)
 	{
-		Color[][] colors = new Color[activePlayer.getSeamap().getSize()][activePlayer.getSeamap().getSize()];
-		int size = getActivePlayer().getSeamap().getSize();
+		Color[][] colors = new Color[player.getSeamap().getSize()][player.getSeamap().getSize()];
+		int size = player.getSeamap().getSize();
 
 		for (int x = 0; x < size; x++)
 		{
@@ -153,7 +163,7 @@ public class GameManager extends Observable
 			}
 		}
 
-		for (Shot s : getActivePlayer().getShots())
+		for (Shot s : player.getShots())
 		{
 			switch (s.getHit())
 			{
@@ -170,6 +180,18 @@ public class GameManager extends Observable
 			}
 		}
 		return colors;
+
+	}
+
+	public Color[][] getCurrentViewOfPlayerOne()
+	{
+		return getViewForPlayer(playerOne);
+		
+		}
+	public Color[][] getCurrentViewOfPlayerTwo()
+	{
+		return getViewForPlayer(playerTwo);
+		
 	}
 
 	public Player getPlayerOne()
@@ -235,7 +257,7 @@ public class GameManager extends Observable
 	public void startGame()
 	{
 		setChanged();
-		notifyObservers();
+		notifyObservers(getActivePlayerID());
 		mainFrame
 			.showMessage("Dies ist das Seegebiet deines Gegners.\nTreffer werden grün dargestellt.\nFehlschüsse rot.");
 		nextTurn();
@@ -246,7 +268,7 @@ public class GameManager extends Observable
 	{
 		activePlayer.putShipOnSeamap(ship, coords, dir);
 		setChanged();
-		notifyObservers();
+		notifyObservers(getActivePlayerID());
 
 	}
 
@@ -298,6 +320,21 @@ public class GameManager extends Observable
 	public MainFrame getMainFrame()
 	{
 		return mainFrame;
+	}
+
+
+	public boolean isPlayersTurn(int playerID) {
+		
+		switch(playerID)
+		{
+		case 1:
+			return activePlayer == playerOne;
+		case 2:
+			return activePlayer == playerTwo;
+			default:
+				return false;
+		}
+		
 	}
 
 }

@@ -18,7 +18,7 @@ public class CruiserTest
 			i++;
 		}
 
-		Assert.assertEquals(3, i);
+		Assert.assertEquals(4, i);
 
 	}
 
