@@ -7,7 +7,7 @@ public class BattleshipFactory extends ShipFactory{
 	}
 
 	@Override
-	public Ship erzeugeSchiff(String name) {
+	public Ship createShip(String name) {
 		return new Battleship(name);
 	}
 	

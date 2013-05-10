@@ -118,7 +118,7 @@ public class SeamapPanel extends JPanel implements Observer
 			|| ((code == GUIStatusCode.ItsPlayerTwosTurnNow) && (playerID == 2)))
 		{
 			isClickable = true;
-			JOptionPane.showMessageDialog(this, "Sie sind am Zug!");
+			JOptionPane.showMessageDialog(this, "Spieler " + playerID + " ist am Zug!");
 		}
 		else
 		{

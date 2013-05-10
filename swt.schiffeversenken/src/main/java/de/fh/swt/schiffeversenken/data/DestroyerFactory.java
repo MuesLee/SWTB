@@ -7,7 +7,7 @@ public class DestroyerFactory extends ShipFactory{
 	}
 
 	@Override
-	public Ship erzeugeSchiff(String name) {
+	public Ship createShip(String name) {
 		return new Destroyer(name);
 	}
 	

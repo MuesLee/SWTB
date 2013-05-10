@@ -6,5 +6,5 @@ public abstract class ShipFactory {
 		super();
 	}
 
-	public abstract Ship erzeugeSchiff(String name);
+	public abstract Ship createShip(String name);
 }
