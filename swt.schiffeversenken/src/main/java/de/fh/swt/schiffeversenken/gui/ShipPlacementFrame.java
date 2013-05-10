@@ -21,7 +21,7 @@ public class ShipPlacementFrame extends JFrame
 {
 
 	private MainFrame mainFrame;
-	private SeamapComponent shipPlacementComponent;
+	private ShipPlacementComponent shipPlacementComponent;
 
 	private JRadioButton down;
 	private JRadioButton right;
@@ -32,11 +32,6 @@ public class ShipPlacementFrame extends JFrame
 	public MainFrame getMainFrame()
 	{
 		return mainFrame;
-	}
-
-	public SeamapComponent getShipPlacementComponent()
-	{
-		return shipPlacementComponent;
 	}
 
 	public JRadioButton getDown()
@@ -78,7 +73,7 @@ public class ShipPlacementFrame extends JFrame
 
 	private void configureComponent(MainFrame mainFrame)
 	{
-		this.shipPlacementComponent = new SeamapComponent(true, this, mainFrame.getGameManager(),
+		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(),
 			GUIHelper.getProperSizeRelativeToScreensize(0.6), false);
 	}
 
@@ -104,6 +99,7 @@ public class ShipPlacementFrame extends JFrame
 		start.addActionListener(new ActionListener()
 		{
 
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				if (shipBox.getItemCount() != 0)
@@ -116,6 +112,7 @@ public class ShipPlacementFrame extends JFrame
 					if (mainFrame.getGameManager().bothPlayerPlacedTheirShips())
 					{
 						setVisible(false);
+						mainFrame.showSeamapFrames();
 						mainFrame.getGameManager().startGame();
 						dispose();
 					}

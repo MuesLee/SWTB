@@ -11,6 +11,7 @@ import de.fh.swt.schiffeversenken.data.Player;
 import de.fh.swt.schiffeversenken.data.Ship;
 import de.fh.swt.schiffeversenken.data.ShipPart;
 import de.fh.swt.schiffeversenken.data.Shot;
+import de.fh.swt.schiffeversenken.gui.GUIStatusCode;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
 
 public class GameManager extends Observable
@@ -28,14 +29,14 @@ public class GameManager extends Observable
 		initiate();
 	}
 
-	
-	public static GameManager getInstance() {
-		if (instance == null) {
-            instance = new GameManager();
-        }
-        return instance;
+	public static GameManager getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new GameManager();
+		}
+		return instance;
 	}
-
 
 	private void initiate()
 	{
@@ -51,7 +52,7 @@ public class GameManager extends Observable
 		mainFrame = new MainFrame(this);
 	}
 
-	public void handleShot(Coords coords)
+	public HitType handleShot(Coords coords)
 	{
 		HitType hitType = HitType.UNKNOWN;
 
@@ -75,6 +76,7 @@ public class GameManager extends Observable
 				hitType = HitType.HIT;
 				if (!shipPart.getShip().isIntact())
 				{
+					hitType = HitType.DESTROYED;
 					mainFrame.showMessage(shipPart.getShip().getName() + " wurde versenkt");
 				}
 			}
@@ -83,7 +85,7 @@ public class GameManager extends Observable
 		Shot shot = new Shot(coords, hitType);
 		storeShot(shot);
 		setChanged();
-		notifyObservers(getActivePlayerID());
+		notifyObservers(GUIStatusCode.DataHasChanged);
 
 		if (!getInactivePlayer().isDefeated())
 		{
@@ -93,6 +95,7 @@ public class GameManager extends Observable
 				case HITAGAIN:
 					nextTurn();
 				break;
+				case DESTROYED:
 				case HIT:
 					//aktiver Spieler darf noch einmal schieﬂen
 				default:
@@ -104,16 +107,18 @@ public class GameManager extends Observable
 		{
 			endGame();
 		}
+
+		return hitType;
 	}
 
-	private int getActivePlayerID() {
-		if(activePlayer == playerOne)
+	public int getActivePlayerID()
+	{
+		if (activePlayer == playerOne)
 		{
 			return 1;
 		}
 		return 2;
 	}
-
 
 	private ShipPart getInactivePlayersShipPartForCoords(Coords coords)
 	{
@@ -138,22 +143,20 @@ public class GameManager extends Observable
 		if (activePlayer.equals(playerOne))
 		{
 			activePlayer = playerTwo;
+			notifyObservers(GUIStatusCode.ItsPlayerTwosTurnNow);
 		}
 		else
 		{
 			activePlayer = playerOne;
+			notifyObservers(GUIStatusCode.ItsPlayerOnesTurnNow);
 		}
 		setChanged();
-		notifyObservers(getActivePlayerID());
-
-		getMainFrame().showMessage(activePlayer.getName() + " ist nun am Zug!");
 	}
-	
-	
+
 	private Color[][] getViewForPlayer(Player player)
 	{
-		Color[][] colors = new Color[player.getSeamap().getSize()][player.getSeamap().getSize()];
 		int size = player.getSeamap().getSize();
+		Color[][] colors = new Color[size][size];
 
 		for (int x = 0; x < size; x++)
 		{
@@ -186,12 +189,13 @@ public class GameManager extends Observable
 	public Color[][] getCurrentViewOfPlayerOne()
 	{
 		return getViewForPlayer(playerOne);
-		
-		}
+
+	}
+
 	public Color[][] getCurrentViewOfPlayerTwo()
 	{
 		return getViewForPlayer(playerTwo);
-		
+
 	}
 
 	public Player getPlayerOne()
@@ -257,7 +261,7 @@ public class GameManager extends Observable
 	public void startGame()
 	{
 		setChanged();
-		notifyObservers(getActivePlayerID());
+		notifyObservers(GUIStatusCode.DataHasChanged);
 		mainFrame
 			.showMessage("Dies ist das Seegebiet deines Gegners.\nTreffer werden gr¸n dargestellt.\nFehlsch¸sse rot.");
 		nextTurn();
@@ -268,7 +272,7 @@ public class GameManager extends Observable
 	{
 		activePlayer.putShipOnSeamap(ship, coords, dir);
 		setChanged();
-		notifyObservers(getActivePlayerID());
+		notifyObservers(GUIStatusCode.DataHasChanged);
 
 	}
 
@@ -321,20 +325,4 @@ public class GameManager extends Observable
 	{
 		return mainFrame;
 	}
-
-
-	public boolean isPlayersTurn(int playerID) {
-		
-		switch(playerID)
-		{
-		case 1:
-			return activePlayer == playerOne;
-		case 2:
-			return activePlayer == playerTwo;
-			default:
-				return false;
-		}
-		
-	}
-
 }

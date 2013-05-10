@@ -20,13 +20,13 @@ public class MainFrame extends JFrame
 
 	private JMenuBar jMenuBar = new JMenuBar();
 	private GameManager gameManager;
-	private SeamapComponent seamapComponentOne;
+	private SeamapPanel seamapComponentOne;
 	private ShipPlacementFrame shipPlacementFrame;
 	private ConfigurationFrame confFrame;
 	private InfoPanel infoPanel;
 	private SeamapFrame framePlayerOne;
 	private SeamapFrame framePlayerTwo;
-	private SeamapComponent seamapComponentTwo;
+	private SeamapPanel seamapComponentTwo;
 
 	public MainFrame(GameManager gameManager)
 	{
@@ -46,7 +46,8 @@ public class MainFrame extends JFrame
 		pack();
 	}
 
-	private void configureSeamapFrames() {
+	private void configureSeamapFrames()
+	{
 		framePlayerOne = new SeamapFrame(gameManager, seamapComponentOne, 1);
 		framePlayerTwo = new SeamapFrame(gameManager, seamapComponentTwo, 2);
 	}
@@ -60,10 +61,8 @@ public class MainFrame extends JFrame
 	{
 		double screenSizeFactor = 0.8;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
-		this.seamapComponentOne = new SeamapComponent(true,null, gameManager, size, true);
-		this.seamapComponentTwo= new SeamapComponent(false, null, gameManager, size, true);
-		seamapComponentOne.setVisible(false);
-		seamapComponentTwo.setVisible(false);
+		this.seamapComponentOne = new SeamapPanel(1, gameManager, size);
+		this.seamapComponentTwo = new SeamapPanel(2, gameManager, size);
 
 	}
 
@@ -79,7 +78,7 @@ public class MainFrame extends JFrame
 	private void configureFrame()
 	{
 		setLayout(new BorderLayout());
-		double screenSizeFactor = 0.6;
+		double screenSizeFactor = 0.4;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Schiffe versenken");
@@ -104,16 +103,18 @@ public class MainFrame extends JFrame
 		menuItemStart.addActionListener(new ActionListener()
 		{
 
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				showConfFrame();
-				showShipComponent();
+
 			}
 		});
 		JMenuItem menuItemBeenden = new JMenuItem("Beenden");
 		menuItemBeenden.addActionListener(new ActionListener()
 		{
 
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				System.exit(0);
@@ -147,9 +148,12 @@ public class MainFrame extends JFrame
 		this.shipPlacementFrame = new ShipPlacementFrame(this);
 	}
 
-	public void showShipComponent()
+	public void showSeamapFrames()
 	{
-		seamapComponentOne.setVisible(true);
+		framePlayerOne.setTitle(gameManager.getPlayerOne().getName());
+		framePlayerTwo.setTitle(gameManager.getPlayerTwo().getName());
+		framePlayerOne.setVisible(true);
+		framePlayerTwo.setVisible(true);
 	}
 
 	public ShipPlacementFrame getShipPlacementFrame()

@@ -33,7 +33,7 @@ public class ConfigurationFrame extends JFrame
 	private void configureFrame()
 	{
 
-		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.4, 0.5);
+		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.3, 0.4);
 		setSize(size);
 		setLayout(new FlowLayout());
 		setPreferredSize(size);
@@ -54,6 +54,7 @@ public class ConfigurationFrame extends JFrame
 		buttonStart.addActionListener(new ActionListener()
 		{
 
+			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				mainFrame.showShipPlacementFrame();
@@ -65,6 +66,7 @@ public class ConfigurationFrame extends JFrame
 		buttonCancel.addActionListener(new ActionListener()
 		{
 
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				setVisible(false);

@@ -3,8 +3,8 @@ package de.fh.swt.schiffeversenken.gui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,8 +13,10 @@ public class InfoPanel extends JPanel
 {
 	private JLabel labelHit;
 	private JLabel labelMiss;
+	private JLabel labelDestroyed;
 	private Canvas infoHit;
 	private Canvas infoMiss;
+	private Canvas infoDestroyed;
 
 	public InfoPanel()
 	{
@@ -23,15 +25,17 @@ public class InfoPanel extends JPanel
 
 	private void configure()
 	{
-		setLayout(new FlowLayout());
+		setLayout(new GridLayout(3, 2));
 		configurePanel();
 		configureLabels();
 		configureCanvas();
 
-		add(labelHit);
 		add(infoHit);
-		add(labelMiss);
+		add(labelHit);
 		add(infoMiss);
+		add(labelMiss);
+		add(infoDestroyed);
+		add(labelDestroyed);
 
 		setVisible(true);
 	}
@@ -51,12 +55,15 @@ public class InfoPanel extends JPanel
 
 		infoHit = new Canvas();
 		infoMiss = new Canvas();
+		infoDestroyed = new Canvas();
 
 		infoHit.setBackground(Color.GREEN);
 		infoMiss.setBackground(Color.RED);
+		infoDestroyed.setBackground(Color.black);
 
 		infoHit.setSize(size);
 		infoMiss.setSize(size);
+		infoDestroyed.setSize(size);
 	}
 
 	private void configureLabels()
@@ -65,8 +72,9 @@ public class InfoPanel extends JPanel
 
 		labelHit = new JLabel("Treffer");
 		labelMiss = new JLabel("kein Treffer");
-		labelHit.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight()));
-		labelMiss.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight()));
+		labelDestroyed = new JLabel("versenktes Schiff");
+		labelHit.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2));
+		labelMiss.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2));
+		labelDestroyed.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2));
 	}
-
 }
