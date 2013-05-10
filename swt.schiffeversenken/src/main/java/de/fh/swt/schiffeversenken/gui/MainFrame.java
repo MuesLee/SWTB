@@ -80,7 +80,7 @@ public class MainFrame extends JFrame
 		setLayout(new BorderLayout());
 		double screenSizeFactor = 0.4;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle("Schiffe versenken");
 		setSize(size);
 		setMaximumSize(size);
@@ -88,6 +88,38 @@ public class MainFrame extends JFrame
 		setResizable(true);
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	public SeamapPanel getSeamapComponentOne() {
+		return seamapComponentOne;
+	}
+
+	public void setSeamapComponentOne(SeamapPanel seamapComponentOne) {
+		this.seamapComponentOne = seamapComponentOne;
+	}
+
+	public SeamapFrame getFramePlayerOne() {
+		return framePlayerOne;
+	}
+
+	public void setFramePlayerOne(SeamapFrame framePlayerOne) {
+		this.framePlayerOne = framePlayerOne;
+	}
+
+	public SeamapFrame getFramePlayerTwo() {
+		return framePlayerTwo;
+	}
+
+	public void setFramePlayerTwo(SeamapFrame framePlayerTwo) {
+		this.framePlayerTwo = framePlayerTwo;
+	}
+
+	public SeamapPanel getSeamapComponentTwo() {
+		return seamapComponentTwo;
+	}
+
+	public void setSeamapComponentTwo(SeamapPanel seamapComponentTwo) {
+		this.seamapComponentTwo = seamapComponentTwo;
 	}
 
 	public void showMessage(String message)

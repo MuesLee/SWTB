@@ -35,7 +35,6 @@ public class SeamapFrame extends JFrame
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(seamapPanel);
 		pack();
-		setVisible(true);
 	}
 
 }

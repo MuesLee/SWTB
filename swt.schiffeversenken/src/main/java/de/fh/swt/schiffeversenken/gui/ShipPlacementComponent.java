@@ -28,16 +28,16 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	private Color[][] currentViewOfPlayer;
 	private ShipPlacementFrame shipPlacementFrame;
 
-	public ShipPlacementComponent( ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size, boolean type)
+	public ShipPlacementComponent( ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size)
 	{
 
 		this.gameManager = gameManager;
 		this.gameManager.addObserver(this);
 		this.shipPlacementFrame = shipPlacementFrame;
 		
-		currentViewOfPlayer = gameManager.getCurrentViewOfPlayerOne();
+		currentViewOfPlayer = gameManager.getViewOfCurrrentPlayersOwnShips();
 		seamapSize = currentViewOfPlayer.length;
-		configure(size, type);
+		configure(size);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 		return gameManager.getViewOfCurrrentPlayersOwnShips();
 	}
 
-	private void configure(Dimension size, final boolean type)
+	private void configure(Dimension size)
 	{
 		setSize(size);
 		setPreferredSize(size);
@@ -81,24 +81,11 @@ public class ShipPlacementComponent extends JComponent implements Observer
 					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
 						/ (cellSize + spaceBetweenCells);
 
-					if (type){
-						if (gameManager.activePlayerHasThePermissionToStartTheApocalypse())
-						{
-						makeShot(x, y);
-						}
-					}
-					else {
 						placeShip(x, y);
-					}
-
 			}
 		});
 	}
 
-	public void makeShot(int x, int y)
-	{
-		gameManager.handleShot(new Coords(x, y));
-	}
 	
 	public void placeShip(int x, int y)
 	{

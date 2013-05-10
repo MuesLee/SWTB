@@ -74,7 +74,7 @@ public class ShipPlacementFrame extends JFrame
 	private void configureComponent(MainFrame mainFrame)
 	{
 		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(),
-			GUIHelper.getProperSizeRelativeToScreensize(0.6), false);
+			GUIHelper.getProperSizeRelativeToScreensize(0.6));
 	}
 
 	private void addAllComps()

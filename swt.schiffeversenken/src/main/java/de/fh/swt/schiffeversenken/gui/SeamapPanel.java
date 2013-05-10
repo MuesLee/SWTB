@@ -48,7 +48,6 @@ public class SeamapPanel extends JPanel implements Observer
 
 	private void fillGrid()
 	{
-
 		for (int i = 0; i < seamapSize; i++)
 		{
 			for (int j = 0; j < seamapSize; j++)
@@ -58,6 +57,8 @@ public class SeamapPanel extends JPanel implements Observer
 				gridBagConstraints.gridy = j;
 				gridBagConstraints.gridheight = 1;
 				gridBagConstraints.gridwidth = 1;
+				gridBagConstraints.weightx =1;
+				gridBagConstraints.weighty =1;
 				gridBagConstraints.insets = new Insets(spaceBetweenCells, spaceBetweenCells, spaceBetweenCells,
 					spaceBetweenCells);
 				gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -68,8 +69,8 @@ public class SeamapPanel extends JPanel implements Observer
 
 	public Dimension calculateCellSize()
 	{
-		double tWidth = this.getWidth() / seamapSize;
-		double tHeight = this.getHeight() / seamapSize;
+		double tWidth = getWidth() / seamapSize;
+		double tHeight = getHeight() / seamapSize;
 
 		if (tHeight < 1)
 		{
@@ -80,7 +81,7 @@ public class SeamapPanel extends JPanel implements Observer
 			tWidth = 1;
 		}
 
-		double cellSize = (Math.min(tHeight, tWidth)) - spaceBetweenCells;
+		double cellSize = (Math.min(tHeight, tWidth)) - spaceBetweenCells*2;
 
 		return new Dimension((int) cellSize, (int) cellSize);
 	}

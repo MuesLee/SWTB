@@ -3,6 +3,8 @@ package de.fh.swt.schiffeversenken.controller;
 import java.awt.Color;
 import java.util.Observable;
 
+import javax.swing.JOptionPane;
+
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
 import de.fh.swt.schiffeversenken.data.HitType;
@@ -77,7 +79,13 @@ public class GameManager extends Observable
 				if (!shipPart.getShip().isIntact())
 				{
 					hitType = HitType.DESTROYED;
-					mainFrame.showMessage(shipPart.getShip().getName() + " wurde versenkt");
+					if(activePlayer == playerOne)
+					{
+						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName() + " wurde versenkt");
+					}
+					else{
+						JOptionPane.showMessageDialog(mainFrame.getFramePlayerTwo(), shipPart.getShip().getName() + " wurde versenkt");   
+					}
 				}
 			}
 
@@ -97,7 +105,6 @@ public class GameManager extends Observable
 				break;
 				case DESTROYED:
 				case HIT:
-					//aktiver Spieler darf noch einmal schieﬂen
 				default:
 				break;
 			}
@@ -140,6 +147,7 @@ public class GameManager extends Observable
 
 	public void nextTurn()
 	{
+		setChanged();
 		if (activePlayer.equals(playerOne))
 		{
 			activePlayer = playerTwo;
@@ -150,53 +158,9 @@ public class GameManager extends Observable
 			activePlayer = playerOne;
 			notifyObservers(GUIStatusCode.ItsPlayerOnesTurnNow);
 		}
-		setChanged();
 	}
 
-	private Color[][] getViewForPlayer(Player player)
-	{
-		int size = player.getSeamap().getSize();
-		Color[][] colors = new Color[size][size];
 
-		for (int x = 0; x < size; x++)
-		{
-			for (int y = 0; y < size; y++)
-			{
-				colors[x][y] = Color.BLUE;
-			}
-		}
-
-		for (Shot s : player.getShots())
-		{
-			switch (s.getHit())
-			{
-				case HITAGAIN:
-				case HIT:
-					colors[s.getCoords().getX()][s.getCoords().getY()] = Color.GREEN;
-				break;
-				case NOHIT:
-					colors[s.getCoords().getX()][s.getCoords().getY()] = Color.RED;
-				break;
-				case UNKNOWN:
-				default:
-					continue;
-			}
-		}
-		return colors;
-
-	}
-
-	public Color[][] getCurrentViewOfPlayerOne()
-	{
-		return getViewForPlayer(playerOne);
-
-	}
-
-	public Color[][] getCurrentViewOfPlayerTwo()
-	{
-		return getViewForPlayer(playerTwo);
-
-	}
 
 	public Player getPlayerOne()
 	{
@@ -262,8 +226,6 @@ public class GameManager extends Observable
 	{
 		setChanged();
 		notifyObservers(GUIStatusCode.DataHasChanged);
-		mainFrame
-			.showMessage("Dies ist das Seegebiet deines Gegners.\nTreffer werden gr¸n dargestellt.\nFehlsch¸sse rot.");
 		nextTurn();
 		fireAtWill();
 	}
