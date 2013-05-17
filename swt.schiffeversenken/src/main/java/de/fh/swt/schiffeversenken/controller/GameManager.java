@@ -1,7 +1,13 @@
 package de.fh.swt.schiffeversenken.controller;
 
 import java.awt.Color;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Observable;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
@@ -25,17 +31,45 @@ public class GameManager extends Observable
 	private MainFrame mainFrame;
 
 	private boolean fireAtWill = false;
+	private Properties prop;
 
-	private GameManager()
+	private GameManager(Locale language)
 	{
+		getPropertiesByLanguage(language);
 		initiate();
 	}
 
-	public static GameManager getInstance()
+	private void getPropertiesByLanguage(Locale language)
+	{
+		String propertiesPath = "en-i18n.properties";
+
+		if (language.getLanguage().equals("de"))
+		{
+			propertiesPath = "de-i18n.properties";
+		}
+
+		BufferedInputStream stream;
+		try
+		{
+			stream = new BufferedInputStream(new FileInputStream(propertiesPath));
+			prop.load(stream);
+			stream.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("Properties " + propertiesPath + " not found");
+		}
+		catch (IOException e)
+		{
+
+		}
+	}
+
+	public static GameManager getInstance(Locale language)
 	{
 		if (instance == null)
 		{
-			instance = new GameManager();
+			instance = new GameManager(language);
 		}
 		return instance;
 	}
@@ -79,12 +113,15 @@ public class GameManager extends Observable
 				if (!shipPart.getShip().isIntact())
 				{
 					hitType = HitType.DESTROYED;
-					if(activePlayer == playerOne)
+					if (activePlayer == playerOne)
 					{
-						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName() + " wurde versenkt");
+						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
+							+ " wurde versenkt");
 					}
-					else{
-						JOptionPane.showMessageDialog(mainFrame.getFramePlayerTwo(), shipPart.getShip().getName() + " wurde versenkt");   
+					else
+					{
+						JOptionPane.showMessageDialog(mainFrame.getFramePlayerTwo(), shipPart.getShip().getName()
+							+ " wurde versenkt");
 					}
 				}
 			}
@@ -159,8 +196,6 @@ public class GameManager extends Observable
 			notifyObservers(GUIStatusCode.ItsPlayerOnesTurnNow);
 		}
 	}
-
-
 
 	public Player getPlayerOne()
 	{
