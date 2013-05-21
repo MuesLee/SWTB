@@ -44,7 +44,7 @@ public class ShipPartCanvas extends Canvas
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(getParent(), "Sie sind nicht am Zug!");
+					JOptionPane.showMessageDialog(getParent(), Messages.getString("ShipPartCanvas.ErrorTextNotUrTurnFucker")); //$NON-NLS-1$
 				}
 			}
 		});

@@ -48,8 +48,8 @@ public class ConfigurationFrame extends JFrame
 		buttonStart = new JButton();
 		buttonCancel = new JButton();
 
-		buttonCancel.setText("Abbrechen");
-		buttonStart.setText("Start");
+		buttonCancel.setText(Messages.getString("ConfigurationFrame.ButtonTextAbort")); //$NON-NLS-1$
+		buttonStart.setText(Messages.getString("ConfigurationFrame.ButtonTextStart")); //$NON-NLS-1$
 
 		buttonStart.addActionListener(new ActionListener()
 		{
@@ -78,8 +78,8 @@ public class ConfigurationFrame extends JFrame
 
 	private void configureTextFields()
 	{
-		textNamePlayerOne = new JTextField("Name Spieler 1");
-		textNamePlayerTwo = new JTextField("Name Spieler 2");
+		textNamePlayerOne = new JTextField(Messages.getString("ConfigurationFrame.TextFieldPlaceholderP1")); //$NON-NLS-1$
+		textNamePlayerTwo = new JTextField(Messages.getString("ConfigurationFrame.TextFieldPlaceholderP2")); //$NON-NLS-1$
 		add(textNamePlayerOne);
 		add(textNamePlayerTwo);
 	}

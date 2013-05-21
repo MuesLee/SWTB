@@ -30,7 +30,7 @@ public class MainFrame extends JFrame
 
 	public MainFrame(GameManager gameManager)
 	{
-		super("Schiffe versenken");
+		super(Messages.getString("MainFrame.FrameTitle")); //$NON-NLS-1$
 		this.setGameManager(gameManager);
 		configure();
 	}
@@ -81,7 +81,6 @@ public class MainFrame extends JFrame
 		double screenSizeFactor = 0.4;
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(screenSizeFactor);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setTitle("Schiffe versenken");
 		setSize(size);
 		setMaximumSize(size);
 		setPreferredSize(size);
@@ -90,35 +89,43 @@ public class MainFrame extends JFrame
 		setVisible(true);
 	}
 
-	public SeamapPanel getSeamapComponentOne() {
+	public SeamapPanel getSeamapComponentOne()
+	{
 		return seamapComponentOne;
 	}
 
-	public void setSeamapComponentOne(SeamapPanel seamapComponentOne) {
+	public void setSeamapComponentOne(SeamapPanel seamapComponentOne)
+	{
 		this.seamapComponentOne = seamapComponentOne;
 	}
 
-	public SeamapFrame getFramePlayerOne() {
+	public SeamapFrame getFramePlayerOne()
+	{
 		return framePlayerOne;
 	}
 
-	public void setFramePlayerOne(SeamapFrame framePlayerOne) {
+	public void setFramePlayerOne(SeamapFrame framePlayerOne)
+	{
 		this.framePlayerOne = framePlayerOne;
 	}
 
-	public SeamapFrame getFramePlayerTwo() {
+	public SeamapFrame getFramePlayerTwo()
+	{
 		return framePlayerTwo;
 	}
 
-	public void setFramePlayerTwo(SeamapFrame framePlayerTwo) {
+	public void setFramePlayerTwo(SeamapFrame framePlayerTwo)
+	{
 		this.framePlayerTwo = framePlayerTwo;
 	}
 
-	public SeamapPanel getSeamapComponentTwo() {
+	public SeamapPanel getSeamapComponentTwo()
+	{
 		return seamapComponentTwo;
 	}
 
-	public void setSeamapComponentTwo(SeamapPanel seamapComponentTwo) {
+	public void setSeamapComponentTwo(SeamapPanel seamapComponentTwo)
+	{
 		this.seamapComponentTwo = seamapComponentTwo;
 	}
 
@@ -130,8 +137,8 @@ public class MainFrame extends JFrame
 	private void configureMenu()
 	{
 		final MainFrame frame = this;
-		JMenu jMenu = new JMenu("Datei");
-		JMenuItem menuItemStart = new JMenuItem("Start");
+		JMenu jMenu = new JMenu(Messages.getString("MainFrame.MenuData")); //$NON-NLS-1$
+		JMenuItem menuItemStart = new JMenuItem(Messages.getString("MainFrame.MenuStart")); //$NON-NLS-1$
 		menuItemStart.addActionListener(new ActionListener()
 		{
 
@@ -142,7 +149,7 @@ public class MainFrame extends JFrame
 
 			}
 		});
-		JMenuItem menuItemBeenden = new JMenuItem("Beenden");
+		JMenuItem menuItemBeenden = new JMenuItem(Messages.getString("MainFrame.MenuExit")); //$NON-NLS-1$
 		menuItemBeenden.addActionListener(new ActionListener()
 		{
 

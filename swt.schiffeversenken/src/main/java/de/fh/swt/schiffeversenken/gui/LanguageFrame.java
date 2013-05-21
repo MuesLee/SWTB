@@ -61,7 +61,8 @@ public class LanguageFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GameManager gameManager = GameManager.getInstance(getChosenLocale());
+				Messages.setResourceBundle(getChosenLocale());
+				GameManager gameManager = GameManager.getInstance();
 				gameManager.startUp();
 				dispose();
 			}

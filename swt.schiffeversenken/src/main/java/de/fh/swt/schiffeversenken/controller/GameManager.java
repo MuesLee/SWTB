@@ -1,11 +1,6 @@
 package de.fh.swt.schiffeversenken.controller;
 
 import java.awt.Color;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Locale;
 import java.util.Observable;
 import java.util.Properties;
 
@@ -21,6 +16,7 @@ import de.fh.swt.schiffeversenken.data.ShipPart;
 import de.fh.swt.schiffeversenken.data.Shot;
 import de.fh.swt.schiffeversenken.gui.GUIStatusCode;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
+import de.fh.swt.schiffeversenken.gui.Messages;
 
 public class GameManager extends Observable
 {
@@ -33,43 +29,16 @@ public class GameManager extends Observable
 	private boolean fireAtWill = false;
 	private Properties prop;
 
-	private GameManager(Locale language)
+	private GameManager()
 	{
-		getPropertiesByLanguage(language);
 		initiate();
 	}
 
-	private void getPropertiesByLanguage(Locale language)
-	{
-		String propertiesPath = "en-i18n.properties";
-
-		if (language.getLanguage().equals("de"))
-		{
-			propertiesPath = "de-i18n.properties";
-		}
-
-		BufferedInputStream stream;
-		try
-		{
-			stream = new BufferedInputStream(new FileInputStream(propertiesPath));
-			prop.load(stream);
-			stream.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			System.out.println("Properties " + propertiesPath + " not found");
-		}
-		catch (IOException e)
-		{
-
-		}
-	}
-
-	public static GameManager getInstance(Locale language)
+	public static GameManager getInstance()
 	{
 		if (instance == null)
 		{
-			instance = new GameManager(language);
+			instance = new GameManager();
 		}
 		return instance;
 	}
@@ -77,8 +46,8 @@ public class GameManager extends Observable
 	private void initiate()
 	{
 		int seamapSize = 12;
-		playerOne = new Player("Spieler 1", seamapSize);
-		playerTwo = new Player("Spieler 2", seamapSize);
+		playerOne = new Player(Messages.getString("GameManager.NamePlayer1Default"), seamapSize); //$NON-NLS-1$
+		playerTwo = new Player(Messages.getString("GameManager.NamePlayer2Default"), seamapSize); //$NON-NLS-1$
 		activePlayer = playerOne;
 
 	}
@@ -116,12 +85,12 @@ public class GameManager extends Observable
 					if (activePlayer == playerOne)
 					{
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
-							+ " wurde versenkt");
+							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
 					}
 					else
 					{
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerTwo(), shipPart.getShip().getName()
-							+ " wurde versenkt");
+							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
 					}
 				}
 			}
@@ -171,7 +140,8 @@ public class GameManager extends Observable
 
 	private void endGame()
 	{
-		mainFrame.showMessage("Herzlichen Glückwunsch " + activePlayer.getName() + ",\nDu hast gewonnen!");
+		mainFrame
+			.showMessage(Messages.getString("GameManager.InfoTextCongratulationsBitch") + activePlayer.getName() + Messages.getString("GameManager.InfoTextUWon")); //$NON-NLS-1$ //$NON-NLS-2$
 		mainFrame.dispose();
 		resetGame();
 	}

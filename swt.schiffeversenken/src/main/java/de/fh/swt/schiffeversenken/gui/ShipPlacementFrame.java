@@ -61,7 +61,7 @@ public class ShipPlacementFrame extends JFrame
 
 	public ShipPlacementFrame(MainFrame mainFrame)
 	{
-		super("Platziere die Schiffe");
+		super(Messages.getString("ShipPlacementFrame.frameTitle")); //$NON-NLS-1$
 		this.mainFrame = mainFrame;
 		configureComponent(mainFrame);
 		configureButtons();
@@ -88,9 +88,9 @@ public class ShipPlacementFrame extends JFrame
 
 	private void configureButtons()
 	{
-		start = new JButton("Start");
-		down = new JRadioButton("nach unten");
-		right = new JRadioButton("nach rechts");
+		start = new JButton(Messages.getString("ShipPlacementFrame.ButtonTextStart")); //$NON-NLS-1$
+		down = new JRadioButton(Messages.getString("ShipPlacementFrame.RadioButtonDown")); //$NON-NLS-1$
+		right = new JRadioButton(Messages.getString("ShipPlacementFrame.RadioButtonRight")); //$NON-NLS-1$
 		buttonGroup = new ButtonGroup();
 		buttonGroup.add(right);
 		buttonGroup.add(down);
@@ -104,7 +104,7 @@ public class ShipPlacementFrame extends JFrame
 			{
 				if (shipBox.getItemCount() != 0)
 				{
-					JOptionPane.showMessageDialog(shipPlacementComponent, "Es wurden noch nicht alle Schiffe gesetzt!");
+					JOptionPane.showMessageDialog(shipPlacementComponent, Messages.getString("ShipPlacementFrame.ErrorTextNotAllShipsPlaced")); //$NON-NLS-1$
 				}
 
 				else

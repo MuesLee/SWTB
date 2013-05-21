@@ -70,11 +70,11 @@ public class InfoPanel extends JPanel
 	{
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.02);
 
-		labelHit = new JLabel("Treffer");
-		labelMiss = new JLabel("kein Treffer");
-		labelDestroyed = new JLabel("versenktes Schiff");
-		labelHit.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2));
-		labelMiss.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2));
-		labelDestroyed.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2));
+		labelHit = new JLabel(Messages.getString("InfoPanel.LabelTextHit")); //$NON-NLS-1$
+		labelMiss = new JLabel(Messages.getString("InfoPanel.LabelTextNoHit")); //$NON-NLS-1$
+		labelDestroyed = new JLabel(Messages.getString("InfoPanel.LabelTextDestroyed")); //$NON-NLS-1$
+		labelHit.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2)); //$NON-NLS-1$
+		labelMiss.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2)); //$NON-NLS-1$
+		labelDestroyed.setFont(new Font("Arial Bold", Font.PLAIN, (int) size.getHeight() / 2)); //$NON-NLS-1$
 	}
 }

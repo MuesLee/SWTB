@@ -1,7 +1,6 @@
 package de.fh.swt.schiffeversenken.data;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +19,7 @@ public class GameManagerTest
 	@Before
 	public void initiate() throws IllegalShipPlacementException
 	{
-		this.gameManager = GameManager.getInstance(new Locale("de"));
+		this.gameManager = GameManager.getInstance();
 
 		ArrayList<Ship> shipsPlayerOne = new ArrayList<Ship>();
 		ArrayList<Ship> shipsPlayerTwo = new ArrayList<Ship>();

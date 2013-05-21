@@ -16,7 +16,7 @@ public class SeamapFrame extends JFrame
 
 	public SeamapFrame(GameManager gameManager, SeamapPanel seamapComponent, int playerID)
 	{
-		super("Spieler " + playerID);
+		super(Messages.getString("SeamapFrame.FrameTitle") + playerID); //$NON-NLS-1$
 		this.gameManager = gameManager;
 		this.playerID = playerID;
 		this.seamapPanel = seamapComponent;

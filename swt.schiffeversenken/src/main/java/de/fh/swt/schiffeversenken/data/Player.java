@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.fh.swt.schiffeversenken.gui.Messages;
+
 public class Player
 {
 
@@ -43,16 +45,16 @@ public class Player
 		ShipFactory dShipFactory = new DestroyerFactory();
 		ShipFactory sShipFactory = new SubmarineFactory();
 
-		ships.add(bShipFactory.createShip("Schlachtschiff"));
-		ships.add(cShipFactory.createShip("Kreuzer 1"));
-		ships.add(cShipFactory.createShip("Kreuzer 2"));
-		ships.add(dShipFactory.createShip("Zerstörer 1"));
-		ships.add(dShipFactory.createShip("Zerstörer 2"));
-		ships.add(dShipFactory.createShip("Zerstörer 3"));
-		ships.add(sShipFactory.createShip("U-Boot 1"));
-		ships.add(sShipFactory.createShip("U-Boot 2"));
-		ships.add(sShipFactory.createShip("U-Boot 3"));
-		ships.add(sShipFactory.createShip("U-Boot 4"));
+		ships.add(bShipFactory.createShip(Messages.getString("Player.NameBattleship"))); //$NON-NLS-1$
+		ships.add(cShipFactory.createShip(Messages.getString("Player.NameCruiser1"))); //$NON-NLS-1$
+		ships.add(cShipFactory.createShip(Messages.getString("Player.NameCruiser2"))); //$NON-NLS-1$
+		ships.add(dShipFactory.createShip(Messages.getString("Player.NameDestroyer1"))); //$NON-NLS-1$
+		ships.add(dShipFactory.createShip(Messages.getString("Player.NameDestroyer2"))); //$NON-NLS-1$
+		ships.add(dShipFactory.createShip(Messages.getString("Player.NameDestroyer3"))); //$NON-NLS-1$
+		ships.add(sShipFactory.createShip(Messages.getString("Player.NameSubmarine1"))); //$NON-NLS-1$
+		ships.add(sShipFactory.createShip(Messages.getString("Player.NameSubmarine2"))); //$NON-NLS-1$
+		ships.add(sShipFactory.createShip(Messages.getString("Player.NameSubmarine3"))); //$NON-NLS-1$
+		ships.add(sShipFactory.createShip(Messages.getString("Player.NameSubmarine4"))); //$NON-NLS-1$
 	}
 
 	public List<Ship> getShips()
