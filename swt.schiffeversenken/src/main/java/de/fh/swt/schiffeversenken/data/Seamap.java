@@ -2,30 +2,33 @@ package de.fh.swt.schiffeversenken.data;
 
 import de.fh.swt.schiffeversenken.controller.GameManager;
 
-
 public class Seamap
 {
 
 	private ShipPart[][] shipParts;
 	private int size;
 
+	//Seekarte initialisieren
 	public Seamap(int size)
 	{
 		this.size = size;
 		initiate();
 	}
 
+	
 	private void initiate()
 	{
 
 		this.shipParts = new ShipPart[size][size];
 	}
 
+	//gibt Schiffsteile zurück
 	public ShipPart[][] getShipParts()
 	{
 		return shipParts;
 	}
 
+	//Schiffe auf Seekarte setzen(Schiffstyp, vorderste Koordinate, Richtung übergeben), falls möglich
 	public void putShipOnSeamap(Ship ship, Coords fore, Direction direction) throws IllegalShipPlacementException
 	{
 
@@ -33,6 +36,7 @@ public class Seamap
 		{
 			GameManager.getLogger().error("No ship chosen");
 			throw new IllegalShipPlacementException("Kein Schiff ausgewählt!");
+			//throw new IllegalShipPlacementException(Messages.getString("Seamap.InfoTextNoShip"));
 		}
 
 		/**
@@ -59,6 +63,7 @@ public class Seamap
 
 	}
 
+	//Schiffsteile wieder entfernen, wenn ungültiger Weise gesetzt
 	private void removeShipParts(Coords fore, Direction direction, int part) throws IllegalShipPlacementException
 	{
 		ShipPart[] shipPartsToDelete = new ShipPart[part];
@@ -66,6 +71,7 @@ public class Seamap
 		iterateOverShipPartsAndSetNewValues(fore, direction, shipPartsToDelete);
 	}
 
+	//über die einzelnen Schiffsteile iterieren und neue Werte setzen, wenn die Schiffe korrekt positioniert wurden, ansonsten Fehlermeldung ausgeben
 	private void iterateOverShipPartsAndSetNewValues(Coords fore, Direction direction, ShipPart[] newValues)
 		throws IllegalShipPlacementException
 	{
@@ -104,6 +110,7 @@ public class Seamap
 
 	}
 
+	//Schiffsteile ermitteln
 	public ShipPart getShipPart(Coords coords)
 	{
 		if ((coords.getX() >= 0) && (coords.getY() >= 0) && (coords.getX() < size) && (coords.getY() < size))
@@ -117,6 +124,7 @@ public class Seamap
 		}
 	}
 
+	//Platzierung der Schiffsteile korrekt?
 	private boolean legitShipPlacement(Coords coords, ShipPart shipPart)
 	{
 		if (theseCoordsAndSurroundingCoordsAreFree(coords, shipPart))
@@ -128,6 +136,7 @@ public class Seamap
 
 	}
 
+	//berechnen, ob die Koordinaten des platzierten Schiffsteils zulässig sind
 	private boolean theseCoordsAndSurroundingCoordsAreFree(Coords coords, ShipPart shipPartToPlace)
 	{
 
@@ -158,6 +167,7 @@ public class Seamap
 		return true;
 	}
 
+	//prüfen, ob Schiffsteil zu Schiff gehört
 	private boolean shipPartBelongsToGivenShip(ShipPart givenShipPart, Ship givenShip)
 	{
 
@@ -170,6 +180,7 @@ public class Seamap
 
 	}
 
+	//getter- und setter-Methoden zu Schiffsteilen und Größe
 	public void setShipParts(ShipPart[][] coords)
 	{
 		this.shipParts = coords;

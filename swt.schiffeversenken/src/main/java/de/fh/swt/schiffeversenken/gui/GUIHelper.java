@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 public class GUIHelper
 {
 
+	//Dimension der GUI relativ der Bildschirmgröße anpassen
 	public static Dimension getProperSizeRelativeToScreensize(double screenSizeFactor)
 	{
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();

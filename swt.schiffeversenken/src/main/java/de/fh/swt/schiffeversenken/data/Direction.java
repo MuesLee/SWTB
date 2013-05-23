@@ -1,5 +1,7 @@
 package de.fh.swt.schiffeversenken.data;
 
+
+//Festlegen der Richtung und zugehörige getter-Methoden
 public enum Direction {
 
 	DOWN(0, 1), RIGHT(1, 0);

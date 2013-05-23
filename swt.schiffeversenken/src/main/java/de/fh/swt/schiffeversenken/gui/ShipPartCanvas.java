@@ -19,6 +19,7 @@ public class ShipPartCanvas extends Canvas
 	private Dimension size;
 	private SeamapPanel seamapComponent;
 
+	//setzt alle nötigen Komponenten für die ShipParts
 	public ShipPartCanvas(SeamapPanel seamapComponent, Coords coords, Dimension size)
 	{
 		this.size = size;
@@ -28,6 +29,7 @@ public class ShipPartCanvas extends Canvas
 		setVisible(true);
 	}
 
+	//Konfigurieren des Grids(blau färben etc.)
 	private void configure()
 	{
 		setSize(size);
@@ -52,6 +54,7 @@ public class ShipPartCanvas extends Canvas
 		});
 	}
 
+	//Je nach HitType wird eine andere Farbe für das Grid zurückgegeben
 	private Color getColorForHitType(HitType hitType)
 	{
 		Color color;
@@ -77,12 +80,14 @@ public class ShipPartCanvas extends Canvas
 		return color;
 	}
 
+	//Farben setzen
 	public void setColor(Color color)
 	{
 		setBackground(color);
 		repaint();
 	}
 
+	//getter- und setter-Methoden für die Koordinaten
 	public Coords getCoords()
 	{
 		return coords;

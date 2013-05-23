@@ -30,6 +30,7 @@ public class ShipPlacementFrame extends JFrame
 	private JButton start;
 	private JComboBox shipBox;
 
+	//getter- und setter-Methoden zu den jeweiligen Elementen(MainFrame, Richtungswahl, Buttons, Schiffsliste)
 	public MainFrame getMainFrame()
 	{
 		return mainFrame;
@@ -60,6 +61,7 @@ public class ShipPlacementFrame extends JFrame
 		return shipBox;
 	}
 
+	//setzt alle nötigen Komponenten für das ShipPlacementFrame
 	public ShipPlacementFrame(MainFrame mainFrame)
 	{
 		super(Messages.getString("ShipPlacementFrame.frameTitle")); //$NON-NLS-1$
@@ -72,12 +74,14 @@ public class ShipPlacementFrame extends JFrame
 		pack();
 	}
 
+	//Konfigurieren der Komponente(Größe)
 	private void configureComponent(MainFrame mainFrame)
 	{
 		this.shipPlacementComponent = new ShipPlacementComponent(this, mainFrame.getGameManager(),
 			GUIHelper.getProperSizeRelativeToScreensize(0.6));
 	}
 
+	//Hinzufügen der benötigten Komponenten
 	private void addAllComps()
 	{
 		add(shipPlacementComponent, BorderLayout.CENTER);
@@ -87,6 +91,7 @@ public class ShipPlacementFrame extends JFrame
 		add(shipBox, BorderLayout.NORTH);
 	}
 
+	//Konfigurieren der Buttons
 	private void configureButtons()
 	{
 		start = new JButton(Messages.getString("ShipPlacementFrame.ButtonTextStart")); //$NON-NLS-1$
@@ -131,6 +136,7 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
+	//Konfigurieren der Liste mit den Schiffen
 	private void configureShipBox()
 	{
 		this.shipBox = new JComboBox();
@@ -139,6 +145,7 @@ public class ShipPlacementFrame extends JFrame
 
 	}
 
+	//Füllen der Schiffsliste
 	private void fillShipBox()
 	{
 		List<Ship> ships = mainFrame.getGameManager().getActivePlayer().getShips();
@@ -148,6 +155,7 @@ public class ShipPlacementFrame extends JFrame
 		}
 	}
 
+	//Konfigurieren des Frames(Größe, Location, Hintergrundfarbe etc.)
 	private void configureFrame()
 	{
 		double screenSizeFactor = 0.8;

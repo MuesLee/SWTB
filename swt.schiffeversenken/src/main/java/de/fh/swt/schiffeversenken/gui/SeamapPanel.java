@@ -26,6 +26,7 @@ public class SeamapPanel extends JPanel implements Observer
 	private int spaceBetweenCells = 1;
 	private boolean isClickable = false;
 
+	//setzt alle nötigen Komponenten für das SeamapPanel
 	public SeamapPanel(int playerID, GameManager gameManager, Dimension size)
 	{
 		this.gameManager = gameManager;
@@ -36,6 +37,7 @@ public class SeamapPanel extends JPanel implements Observer
 		setVisible(true);
 	}
 
+	//Konfigurieren des SeamapPanels
 	private void configure(Dimension size)
 	{
 		gridLayout = new GridBagLayout();
@@ -46,6 +48,7 @@ public class SeamapPanel extends JPanel implements Observer
 		fillGrid();
 	}
 
+	//füllt das Grid der Seamap
 	private void fillGrid()
 	{
 		for (int i = 0; i < seamapSize; i++)
@@ -67,6 +70,7 @@ public class SeamapPanel extends JPanel implements Observer
 		}
 	}
 
+	//Kalkuliert die Größe der einzelnen Zellen des Grids
 	public Dimension calculateCellSize()
 	{
 		double tWidth = getWidth() / seamapSize;
@@ -86,6 +90,7 @@ public class SeamapPanel extends JPanel implements Observer
 		return new Dimension((int) cellSize, (int) cellSize);
 	}
 
+	//gibt ShipPlacementFrame zurück
 	public ShipPlacementFrame getShipPlacementFrame()
 	{
 		return shipPlacementFrame;
@@ -112,6 +117,7 @@ public class SeamapPanel extends JPanel implements Observer
 
 	}
 
+	//prüfen, ob das angeklickte Feld auch zur GUI des aktiven Spielers gehört
 	private void checkItsClickable(GUIStatusCode code)
 	{
 		if (((code == GUIStatusCode.ItsPlayerOnesTurnNow) && (playerID == 1))
@@ -126,11 +132,13 @@ public class SeamapPanel extends JPanel implements Observer
 		}
 	}
 
+	
 	public boolean isClickable()
 	{
 		return isClickable;
 	}
 
+	//gibt den HitType des aktuellen Schusses zurück
 	public HitType handleShot(Coords coords)
 	{
 		return gameManager.handleShot(coords);

@@ -23,6 +23,7 @@ public class InfoPanel extends JPanel
 		configure();
 	}
 
+	//Konfigurieren des Info Panels 
 	private void configure()
 	{
 		setLayout(new GridLayout(3, 2));
@@ -40,6 +41,7 @@ public class InfoPanel extends JPanel
 		setVisible(true);
 	}
 
+	//Dimension des Panels festlegen
 	private void configurePanel()
 	{
 		Dimension properSizeByFactor = GUIHelper.getProperSizeRelativeToScreensize(0.2);
@@ -49,6 +51,7 @@ public class InfoPanel extends JPanel
 
 	}
 
+	//Konfigurieren der Canvas-Elemente (Zuordnung der Farben, Größe)
 	private void configureCanvas()
 	{
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.05);
@@ -66,6 +69,7 @@ public class InfoPanel extends JPanel
 		infoDestroyed.setSize(size);
 	}
 
+	//Konfigurieren der Labels(Schriftart, Text)
 	private void configureLabels()
 	{
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.02);
