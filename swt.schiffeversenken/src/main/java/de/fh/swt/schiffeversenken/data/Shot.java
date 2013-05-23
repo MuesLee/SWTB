@@ -8,6 +8,7 @@ public class Shot
 
 	private HitType hit;
 
+	//getter- und setter-Methoden zum HitType und zu den Koordinaten und Übergabe zur Bestimmung des Schusses
 	public HitType getHit()
 	{
 		return hit;

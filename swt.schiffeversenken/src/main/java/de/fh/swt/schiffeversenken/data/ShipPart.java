@@ -1,5 +1,6 @@
 package de.fh.swt.schiffeversenken.data;
 
+//prüfen, ob Schiffsteil intakt ist oder getroffen wurde und einem Schiff zuordnen
 public class ShipPart
 {
 

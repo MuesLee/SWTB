@@ -9,6 +9,7 @@ public class Messages
 	private static final String BUNDLE_NAME = "de.fh.swt.schiffeversenken.gui.messages"; //$NON-NLS-1$
 	private static ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
+	//Bekommt Nachrichten übergeben, welche aufgrund der Sprachauswahl in korrekter Sprache zurückgegeben werden
 	public static String getString(String key)
 	{
 		try

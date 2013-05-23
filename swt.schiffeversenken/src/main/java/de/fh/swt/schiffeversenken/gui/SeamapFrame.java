@@ -14,6 +14,7 @@ public class SeamapFrame extends JFrame
 	private SeamapPanel seamapPanel;
 	private int playerID;
 
+	//setzt alle nötigen Komponenten für das SeamapFrame
 	public SeamapFrame(GameManager gameManager, SeamapPanel seamapComponent, int playerID)
 	{
 		super(Messages.getString("SeamapFrame.FrameTitle") + playerID); //$NON-NLS-1$
@@ -23,6 +24,7 @@ public class SeamapFrame extends JFrame
 		configure();
 	}
 
+	//Konfiguriert das SeamapFrame
 	private void configure()
 	{
 		double screenSizeFactor = 0.8;

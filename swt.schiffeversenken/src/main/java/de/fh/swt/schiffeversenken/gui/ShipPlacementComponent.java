@@ -28,6 +28,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	private Color[][] currentViewOfPlayer;
 	private ShipPlacementFrame shipPlacementFrame;
 
+	//setzt alle nötigen Komponenten für die ShipPlacementComponent
 	public ShipPlacementComponent( ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size)
 	{
 
@@ -59,11 +60,13 @@ public class ShipPlacementComponent extends JComponent implements Observer
 
 	}
 	
+	//gibt die GUI zurück, welche zum Setzen der Schiffe fungiert
 	private Color[][] getViewOfPlayer()
 	{
 		return gameManager.getViewOfCurrrentPlayersOwnShips();
 	}
 
+	//Konfigurieren der GUI zum Schiffe setzen
 	private void configure(Dimension size)
 	{
 		setSize(size);
@@ -87,6 +90,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	}
 
 	
+	//Setzen der Schiffe in richtiger Richtung(wenn möglich)
 	public void placeShip(int x, int y)
 	{
 		Ship ship = null;
@@ -122,6 +126,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 
 	}
 
+	//Größe der einzelnen Felder bestimmen
 	private double calculateCellSize(double height, double width)
 	{
 		double tWidth = this.getWidth() / width;
@@ -139,11 +144,13 @@ public class ShipPlacementComponent extends JComponent implements Observer
 		return (Math.min(tHeight, tWidth)) - spaceBetweenCells;
 	}
 
+	//gibt ShipPlacementFrame zurück
 	public ShipPlacementFrame getShipPlacementFrame()
 	{
 		return shipPlacementFrame;
 	}
 	
+	//Neu zeichnen der Oberfläche
 	public void update(Observable o, Object arg)
 	{
 			currentViewOfPlayer = getViewOfPlayer();

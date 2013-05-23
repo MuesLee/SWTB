@@ -18,7 +18,7 @@ import de.fh.swt.schiffeversenken.gui.GUIStatusCode;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
 import de.fh.swt.schiffeversenken.gui.Messages;
 
-public class GameManager extends Observable
+public class GameManager<playerTwo> extends Observable
 {
 	private static GameManager instance;
 	private Player playerOne;
@@ -29,11 +29,13 @@ public class GameManager extends Observable
 	private boolean fireAtWill = false;
 	private Properties prop;
 
+	//Initiierungsvorgang starten
 	private GameManager()
 	{
 		initiate();
 	}
 
+	//GameManager Instanz sicherstellen
 	public static GameManager getInstance()
 	{
 		if (instance == null)
@@ -42,7 +44,8 @@ public class GameManager extends Observable
 		}
 		return instance;
 	}
-
+	
+	//Seekartengröße setzen und Spieler initiieren
 	private void initiate()
 	{
 		int seamapSize = 12;
@@ -57,6 +60,7 @@ public class GameManager extends Observable
 		mainFrame = new MainFrame(this);
 	}
 
+	//HitType setzen (kein Treffer, Treffer und zerstört, Treffer und nicht zerstört) und prüfen, ob gegnerischer Spieler noch intakte Schiffe besitzt
 	public HitType handleShot(Coords coords)
 	{
 		HitType hitType = HitType.UNKNOWN;
@@ -124,6 +128,7 @@ public class GameManager extends Observable
 		return hitType;
 	}
 
+	//aktiven Spieler festlegen
 	public int getActivePlayerID()
 	{
 		if (activePlayer == playerOne)
@@ -133,11 +138,13 @@ public class GameManager extends Observable
 		return 2;
 	}
 
+	//Koordinaten des beschossenen Schiffteils des inaktiven Spielers bestimmen
 	private ShipPart getInactivePlayersShipPartForCoords(Coords coords)
 	{
 		return getInactivePlayer().getSeamap().getShipPart(coords);
 	}
 
+	//Spiel beenden
 	private void endGame()
 	{
 		mainFrame
@@ -146,12 +153,14 @@ public class GameManager extends Observable
 		resetGame();
 	}
 
+	//Spiel zurücksetzen
 	private void resetGame()
 	{
 		initiate();
 		startUp();
 	}
 
+	//nächsten Zug starten und dabei aktiven Spieler benennen
 	public void nextTurn()
 	{
 		setChanged();
@@ -167,6 +176,7 @@ public class GameManager extends Observable
 		}
 	}
 
+	//getter- und setter-Methoden zu den Spielern(inkl. in/aktiver Spieler)
 	public Player getPlayerOne()
 	{
 		return playerOne;
@@ -201,12 +211,14 @@ public class GameManager extends Observable
 		return playerOne;
 	}
 
+	//abgegebenen Schuss speichern
 	private void storeShot(Shot schuss)
 	{
 
 		activePlayer.addShot(schuss);
 	}
 
+	//Schuss setzen
 	private void setHit(ShipPart shipPart)
 	{
 		shipPart.wasHit();
@@ -227,6 +239,7 @@ public class GameManager extends Observable
 		fireAtWill = true;
 	}
 
+	//Spiel starten
 	public void startGame()
 	{
 		setChanged();
@@ -235,6 +248,7 @@ public class GameManager extends Observable
 		fireAtWill();
 	}
 
+	//Schiffe setzen(Angabe des Schiffs, der Koordinaten, der Richtung)
 	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
 	{
 		activePlayer.putShipOnSeamap(ship, coords, dir);
@@ -243,6 +257,7 @@ public class GameManager extends Observable
 
 	}
 
+	//Haben beide Spieler ihre Schiffe platziert?
 	public boolean bothPlayerPlacedTheirShips()
 	{
 
@@ -255,6 +270,7 @@ public class GameManager extends Observable
 		return false;
 	}
 
+	//Sicht der eigenen Schiffe ausgeben(je nach Zustand der Schiffsteile eine unterschiedliche Farbe)
 	public Color[][] getViewOfCurrrentPlayersOwnShips()
 	{
 		ShipPart[][] shipParts = activePlayer.getSeamap().getShipParts();

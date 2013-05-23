@@ -2,6 +2,7 @@ package de.fh.swt.schiffeversenken.controller;
 
 import de.fh.swt.schiffeversenken.gui.LanguageFrame;
 
+//Hauptklasse zum Programmstart
 public class Main
 {
 

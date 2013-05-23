@@ -7,6 +7,7 @@ public abstract class Ship
 	private String name;
 	protected int amountOfParts = 1;
 
+	//prüfen, ob Schiff intakt ist
 	public boolean isIntact()
 	{
 		for (ShipPart s : shipParts)
@@ -19,6 +20,7 @@ public abstract class Ship
 		return false;
 	}
 
+	//Schiff initialisieren(Name, Anzeil Schiffsteile)
 	public Ship(String name, int amountOfParts)
 	{
 		this.amountOfParts = amountOfParts;
@@ -26,6 +28,7 @@ public abstract class Ship
 		initiate();
 	}
 
+	//Schiffsteile in Array speichern
 	private void initiate()
 	{
 		this.shipParts = new ShipPart[amountOfParts];
@@ -35,6 +38,7 @@ public abstract class Ship
 		}
 	}
 
+	//getter- und setter-Methoden zu den Schiffsteilen und dem Namen
 	public ShipPart[] getShipParts()
 	{
 		return shipParts;

@@ -1,5 +1,6 @@
 package de.fh.swt.schiffeversenken.data;
 
+//Aufzählung der Hit-Types(getroffen, nicht getroffen, zerstört)
 public enum HitType {
 
 	UNKNOWN("nicht überprüfter Schuss"), NOHIT("Platsch! Kein Treffer"), HIT("Treffer!"), HITAGAIN(

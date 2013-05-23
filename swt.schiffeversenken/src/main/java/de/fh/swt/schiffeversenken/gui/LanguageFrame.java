@@ -19,12 +19,14 @@ public class LanguageFrame extends JFrame
 	private JButton buttonStart;
 	private JButton buttonCancel;
 
+	//Sprach-Auswahl
 	public LanguageFrame()
 	{
 		super("Choose a language");
 		configure();
 	}
 
+	////Konfigurieren des LanguageFrames
 	private void configure()
 	{
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -40,6 +42,7 @@ public class LanguageFrame extends JFrame
 		setVisible(true);
 	}
 
+	//Konfigurieren der Buttons
 	private void configureButtons()
 	{
 		buttonCancel = new JButton("Cancel");
@@ -59,7 +62,7 @@ public class LanguageFrame extends JFrame
 		{
 
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void actionPerformed(final ActionEvent e)
 			{
 				Messages.setResourceBundle(getChosenLocale());
 				GameManager gameManager = GameManager.getInstance();
@@ -71,11 +74,13 @@ public class LanguageFrame extends JFrame
 
 	}
 
+	//gewählte Sprache zurückgeben
 	private Locale getChosenLocale()
 	{
 		return (Locale) languageBox.getSelectedItem();
 	}
 
+	//Elemente dem Frame hinzufügen
 	private void addStuff()
 	{
 		Container contentPane = getContentPane();
@@ -84,6 +89,7 @@ public class LanguageFrame extends JFrame
 		contentPane.add(buttonCancel);
 	}
 
+	//Sprach-Elemente der Liste hinzufügen
 	private void fillLanguageBox()
 	{
 		languageBox = new JComboBox();

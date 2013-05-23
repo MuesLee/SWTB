@@ -15,6 +15,7 @@ public class Player
 	private Set<Shot> shots = new HashSet<Shot>();
 	private Seamap seamap;
 
+	//prüfen, ob ein Spieler besiegt wurde
 	public boolean isDefeated()
 	{
 		for (Ship s : ships)
@@ -28,6 +29,7 @@ public class Player
 		return true;
 	}
 
+	//Daten zum Spieler festlegen(Name, abgegebene Schüsse, Schiffsplatzierung)
 	public Player(String name, int seamapSize)
 	{
 		this.name = name;
@@ -38,6 +40,7 @@ public class Player
 
 	}
 
+	//füllen der Liste mit den zu platzierenden Schiffen
 	private void fillShipList()
 	{
 		ShipFactory bShipFactory = new BattleshipFactory();
@@ -57,6 +60,7 @@ public class Player
 		ships.add(sShipFactory.createShip(Messages.getString("Player.NameSubmarine4"))); //$NON-NLS-1$
 	}
 
+	//getter- und setter-Methoden zu den benötigten Attributen für einen Spieler(Schiffe, Seekarte, Name, Schüsse)
 	public List<Ship> getShips()
 	{
 		return ships;
@@ -97,6 +101,7 @@ public class Player
 		this.shots.add(shot);
 	}
 
+	//Schiff auf Seekarte setzen
 	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
 	{
 		seamap.putShipOnSeamap(ship, coords, dir);

@@ -18,6 +18,7 @@ public class ConfigurationFrame extends JFrame
 	private JTextField textNamePlayerTwo;
 	private MainFrame mainFrame;
 
+	//Konfigurieren des Mainframes
 	public ConfigurationFrame(MainFrame mainFrame)
 	{
 
@@ -30,6 +31,7 @@ public class ConfigurationFrame extends JFrame
 		setVisible(true);
 	}
 
+	//Konfigurieren des Frames(Größe, Layout etc.)
 	private void configureFrame()
 	{
 
@@ -42,6 +44,7 @@ public class ConfigurationFrame extends JFrame
 		setLocationRelativeTo(null);
 	}
 
+	//Konfigurieren der Buttons
 	private void configureBoxes()
 	{
 
@@ -76,6 +79,7 @@ public class ConfigurationFrame extends JFrame
 		add(buttonCancel);
 	}
 
+	//Konfigurieren der Textfelder
 	private void configureTextFields()
 	{
 		textNamePlayerOne = new JTextField(Messages.getString("ConfigurationFrame.TextFieldPlaceholderP1")); //$NON-NLS-1$
@@ -84,6 +88,7 @@ public class ConfigurationFrame extends JFrame
 		add(textNamePlayerTwo);
 	}
 
+	//Namen der Spieler auslesen
 	public String getNameForPlayerOne()
 	{
 		return textNamePlayerOne.getText().trim();

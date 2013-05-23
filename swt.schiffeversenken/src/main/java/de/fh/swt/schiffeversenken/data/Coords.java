@@ -1,5 +1,6 @@
 package de.fh.swt.schiffeversenken.data;
 
+//getter- und setter-Methoden zu den Koordinaten
 public class Coords
 {
 	private int x, y;

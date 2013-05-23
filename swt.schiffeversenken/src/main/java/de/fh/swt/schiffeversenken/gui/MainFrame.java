@@ -28,6 +28,7 @@ public class MainFrame extends JFrame
 	private SeamapFrame framePlayerTwo;
 	private SeamapPanel seamapComponentTwo;
 
+	//GameManager setzen und Überschrift festlegen
 	public MainFrame(GameManager gameManager)
 	{
 		super(Messages.getString("MainFrame.FrameTitle")); //$NON-NLS-1$
@@ -35,6 +36,7 @@ public class MainFrame extends JFrame
 		configure();
 	}
 
+	//Konfigurieren des MainFrames
 	private void configure()
 	{
 		configureFrame();
@@ -46,17 +48,20 @@ public class MainFrame extends JFrame
 		pack();
 	}
 
+	//SeamapFrames der beiden Spieler konfigurieren
 	private void configureSeamapFrames()
 	{
 		framePlayerOne = new SeamapFrame(gameManager, seamapComponentOne, 1);
 		framePlayerTwo = new SeamapFrame(gameManager, seamapComponentTwo, 2);
 	}
 
+	//InfoPanel konfigurieren
 	private void configureInfoPanel()
 	{
 		infoPanel = new InfoPanel();
 	}
 
+	//Konfigurieren der Komponenten der beiden Seamaps
 	private void configureSeamapComponents()
 	{
 		double screenSizeFactor = 0.8;
@@ -66,6 +71,7 @@ public class MainFrame extends JFrame
 
 	}
 
+	//
 	private void configurePane()
 	{
 		Container contentPane = getContentPane();
@@ -75,6 +81,7 @@ public class MainFrame extends JFrame
 		contentPane.add(infoPanel, BorderLayout.EAST);
 	}
 
+	//Konfigurieren des Frames(Größe, Location etc.)
 	private void configureFrame()
 	{
 		setLayout(new BorderLayout());
@@ -89,6 +96,7 @@ public class MainFrame extends JFrame
 		setVisible(true);
 	}
 
+	//getter- und setter-Methoden zu den Seamaps der beiden Spieler
 	public SeamapPanel getSeamapComponentOne()
 	{
 		return seamapComponentOne;
@@ -134,6 +142,7 @@ public class MainFrame extends JFrame
 		JOptionPane.showMessageDialog(this, message);
 	}
 
+	//Konfigurieren des Menüs
 	private void configureMenu()
 	{
 		final MainFrame frame = this;
@@ -165,11 +174,13 @@ public class MainFrame extends JFrame
 		jMenuBar.setVisible(true);
 	}
 
+	//ConfigurationFrame öffnen
 	public void showConfFrame()
 	{
 		this.confFrame = new ConfigurationFrame(this);
 	}
 
+	//setter- und getter-Methoden zum GameManager
 	public GameManager getGameManager()
 	{
 		return gameManager;
@@ -180,6 +191,7 @@ public class MainFrame extends JFrame
 		this.gameManager = gameManager;
 	}
 
+	//Frame zur Schiffsplatzierung öffnen
 	public void showShipPlacementFrame()
 	{
 		gameManager.getPlayerOne().setName(confFrame.getNameForPlayerOne());
@@ -187,6 +199,7 @@ public class MainFrame extends JFrame
 		this.shipPlacementFrame = new ShipPlacementFrame(this);
 	}
 
+	//SeamapFrame öffnen
 	public void showSeamapFrames()
 	{
 		framePlayerOne.setTitle(gameManager.getPlayerOne().getName());
@@ -195,6 +208,7 @@ public class MainFrame extends JFrame
 		framePlayerTwo.setVisible(true);
 	}
 
+	//gibt Frame zur Schiffplatzierung zurück
 	public ShipPlacementFrame getShipPlacementFrame()
 	{
 		return shipPlacementFrame;
