@@ -98,6 +98,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 		catch (NullPointerException e)
 		{
 			JOptionPane.showMessageDialog(this, Messages.getString("ShipPlacementComponent.ErrorTextAllShipsPlaced")); //$NON-NLS-1$
+			GameManager.getLogger().info("All ships already placed");
 		}
 		Direction dir = null;
 

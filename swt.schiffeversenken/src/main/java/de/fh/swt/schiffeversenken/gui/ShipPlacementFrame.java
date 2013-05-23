@@ -14,12 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
+
+import de.fh.swt.schiffeversenken.controller.GameManager;
 import de.fh.swt.schiffeversenken.data.Ship;
 
 public class ShipPlacementFrame extends JFrame
 
 {
-
 	private MainFrame mainFrame;
 	private ShipPlacementComponent shipPlacementComponent;
 
@@ -105,6 +106,7 @@ public class ShipPlacementFrame extends JFrame
 				if (shipBox.getItemCount() != 0)
 				{
 					JOptionPane.showMessageDialog(shipPlacementComponent, Messages.getString("ShipPlacementFrame.ErrorTextNotAllShipsPlaced")); //$NON-NLS-1$
+				    GameManager.getLogger().info("Not all ships placed");
 				}
 
 				else

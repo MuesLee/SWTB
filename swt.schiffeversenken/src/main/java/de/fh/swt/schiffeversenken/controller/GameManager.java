@@ -6,6 +6,9 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.Direction;
 import de.fh.swt.schiffeversenken.data.HitType;
@@ -21,6 +24,7 @@ import de.fh.swt.schiffeversenken.gui.Messages;
 public class GameManager extends Observable
 {
 	private static GameManager instance;
+	private static Logger logger = LoggerFactory.getLogger(GameManager.class);
 	private Player playerOne;
 	private Player playerTwo;
 	private Player activePlayer;
@@ -41,6 +45,11 @@ public class GameManager extends Observable
 			instance = new GameManager();
 		}
 		return instance;
+	}
+	
+	public static Logger getLogger()
+	{
+		return logger;
 	}
 
 	private void initiate()
@@ -68,17 +77,20 @@ public class GameManager extends Observable
 		if ((shipPart == null))
 		{
 			hitType = HitType.NOHIT;
+			logger.info("No ship was hit");
 		}
 		else
 		{
 			if (!shipPart.isIntact())
 			{
 				hitType = HitType.HITAGAIN;
+				logger.info("A part of a {} was hit again", shipPart.getShip().getName());
 			}
 			else
 			{
 				setHit(shipPart);
 				hitType = HitType.HIT;
+				logger.info("A part of a {} was hit", shipPart.getShip().getName());
 				if (!shipPart.getShip().isIntact())
 				{
 					hitType = HitType.DESTROYED;
@@ -86,11 +98,13 @@ public class GameManager extends Observable
 					{
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
+						logger.info("{} of Player 2 was destroyed.",shipPart.getShip().getName());
 					}
 					else
 					{
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerTwo(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
+						logger.info("{} of Player 1 was destroyed.",shipPart.getShip().getName());
 					}
 				}
 			}
@@ -144,6 +158,7 @@ public class GameManager extends Observable
 			.showMessage(Messages.getString("GameManager.InfoTextCongratulationsBitch") + activePlayer.getName() + Messages.getString("GameManager.InfoTextUWon")); //$NON-NLS-1$ //$NON-NLS-2$
 		mainFrame.dispose();
 		resetGame();
+	    logger.info("Game ended");
 	}
 
 	private void resetGame()
@@ -165,6 +180,7 @@ public class GameManager extends Observable
 			activePlayer = playerOne;
 			notifyObservers(GUIStatusCode.ItsPlayerOnesTurnNow);
 		}
+	    logger.info("Next Turn");
 	}
 
 	public Player getPlayerOne()
@@ -233,6 +249,7 @@ public class GameManager extends Observable
 		notifyObservers(GUIStatusCode.DataHasChanged);
 		nextTurn();
 		fireAtWill();
+	    logger.info("Game started");
 	}
 
 	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException

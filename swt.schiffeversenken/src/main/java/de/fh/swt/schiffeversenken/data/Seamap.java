@@ -1,5 +1,7 @@
 package de.fh.swt.schiffeversenken.data;
 
+import de.fh.swt.schiffeversenken.controller.GameManager;
+
 
 public class Seamap
 {
@@ -29,6 +31,7 @@ public class Seamap
 
 		if (ship == null)
 		{
+			GameManager.getLogger().error("No ship chosen");
 			throw new IllegalShipPlacementException("Kein Schiff ausgewählt!");
 		}
 
@@ -83,6 +86,7 @@ public class Seamap
 				}
 				else
 				{
+					GameManager.getLogger().error("Ship placed illegaly near another ship");
 					throw new IllegalShipPlacementException(
 						"Ungültige Positionierung.\nSchiffe dürfen nicht aneinander angrenzen oder übereinander liegen",
 						segment);
@@ -91,6 +95,7 @@ public class Seamap
 
 			catch (ArrayIndexOutOfBoundsException a)
 			{
+				GameManager.getLogger().error("Ship placed illegaly outside the map");
 				throw new IllegalShipPlacementException(
 					"Das Schiff ragte über den Rand der Welt und wäre herunter gefallen, hätten wir nicht so ein tolles Exceptionhandling",
 					segment);

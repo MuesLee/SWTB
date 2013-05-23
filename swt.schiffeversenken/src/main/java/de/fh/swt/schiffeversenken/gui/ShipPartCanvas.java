@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
 
+import de.fh.swt.schiffeversenken.controller.GameManager;
 import de.fh.swt.schiffeversenken.data.Coords;
 import de.fh.swt.schiffeversenken.data.HitType;
 
@@ -45,6 +46,7 @@ public class ShipPartCanvas extends Canvas
 				else
 				{
 					JOptionPane.showMessageDialog(getParent(), Messages.getString("ShipPartCanvas.ErrorTextNotUrTurnFucker")); //$NON-NLS-1$
+					GameManager.getLogger().info("Not players turn");
 				}
 			}
 		});
