@@ -278,8 +278,6 @@ public class GameManager<playerTwo> extends Observable
 	public boolean bothPlayerPlacedTheirShips()
 	{
 
-		//TODO: Muss smarter gemacht werden 
-
 		if (activePlayer == playerTwo)
 		{
 			return true;

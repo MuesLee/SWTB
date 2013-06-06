@@ -48,6 +48,7 @@ public class Seamap
 		try
 		{
 			iterateOverShipPartsAndSetNewValues(fore, direction, ship.getShipParts());
+			GameManager.getLogger().debug("Koordinaten des Schiffes: X=" + fore.getX() + " Y=" + fore.getY());
 		}
 		catch (IllegalShipPlacementException e)
 		{
@@ -184,6 +185,7 @@ public class Seamap
 	public void setShipParts(ShipPart[][] coords)
 	{
 		this.shipParts = coords;
+
 	}
 
 	public int getSize()
