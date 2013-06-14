@@ -17,6 +17,7 @@ import de.fh.swt.schiffeversenken.data.Player;
 import de.fh.swt.schiffeversenken.data.Ship;
 import de.fh.swt.schiffeversenken.data.ShipPart;
 import de.fh.swt.schiffeversenken.data.Shot;
+import de.fh.swt.schiffeversenken.data.SoundFile;
 import de.fh.swt.schiffeversenken.gui.GUIStatusCode;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
 import de.fh.swt.schiffeversenken.gui.Messages;
@@ -39,6 +40,7 @@ public class GameManager<playerTwo> extends Observable
 	{
 		audioController = new AudioController();
 		initiate();
+
 	}
 
 	//GameManager Instanz sicherstellen
@@ -102,6 +104,7 @@ public class GameManager<playerTwo> extends Observable
 					hitType = HitType.DESTROYED;
 					if (activePlayer == playerOne)
 					{
+						audioController.playSound(SoundFile.destroyed);
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
 						logger.info("{} of Player 2 was destroyed.", shipPart.getShip().getName());

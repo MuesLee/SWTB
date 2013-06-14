@@ -1,13 +1,11 @@
 package de.fh.swt.schiffeversenken.controller;
 
-
-
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +25,11 @@ public class AudioController implements Runnable
 	public AudioController()
 	{
 		new Thread(this).start();
-
 	}
 
 	@Override
 	public void run()
 	{
-		initAudioClips();
 		startBackgroundMusic();
 	}
 
@@ -45,6 +41,7 @@ public class AudioController implements Runnable
 			sequencer.open();
 			InputStream midiFile = ClassLoader.getSystemResourceAsStream(SoundFile.backgroundMusic.toString());
 			sequencer.setSequence(MidiSystem.getSequence(midiFile));
+			sequencer.setLoopCount(sequencer.LOOP_CONTINUOUSLY);
 			sequencer.start();
 		}
 		catch (MidiUnavailableException e2)
@@ -67,56 +64,26 @@ public class AudioController implements Runnable
 		sequencer.stop();
 	}
 
-	private void initAudioClips()
-	{
-
-	}
-
 	public void playSound(SoundFile soundFile)
 	{
 		AudioClip sound = null;
 
-		if (clips.containsKey(soundFile))
-		{
-			sound = clips.get(soundFile);
-		}
-		else
+		if (!clips.containsKey(soundFile))
 		{
 			try
 			{
-				URL url = null;
-				url = new URL(soundFile.toString());
-				clips.put(soundFile, Applet.newAudioClip(url));
+				File file = new File(soundFile.toString());
+				clips.put(soundFile, Applet.newAudioClip(file.toURI().toURL()));
 			}
 			catch (MalformedURLException e)
 			{
+				System.out.println("sup?!");
 				return;
 			}
 		}
+
+		sound = clips.get(soundFile);
 		sound.play();
 	}
 
-	public void playLoop(SoundFile soundFile)
-	{
-		AudioClip sound = null;
-
-		if (clips.containsKey(soundFile))
-		{
-			sound = clips.get(soundFile);
-		}
-		else
-		{
-			try
-			{
-				URL url = null;
-				url = new URL(soundFile.toString());
-				clips.put(soundFile, Applet.newAudioClip(url));
-			}
-			catch (MalformedURLException e)
-			{
-				return;
-			}
-		}
-		sound.loop();
-	}
 }
