@@ -25,6 +25,7 @@ public class GameManager<playerTwo> extends Observable
 {
 	private static GameManager instance;
 	private static Logger logger = LoggerFactory.getLogger(GameManager.class);
+	private static AudioController audioController;
 	private Player playerOne;
 	private Player playerTwo;
 	private Player activePlayer;
@@ -36,6 +37,7 @@ public class GameManager<playerTwo> extends Observable
 	//Initiierungsvorgang starten
 	private GameManager()
 	{
+		audioController = new AudioController();
 		initiate();
 	}
 
@@ -48,7 +50,7 @@ public class GameManager<playerTwo> extends Observable
 		}
 		return instance;
 	}
-	
+
 	public static Logger getLogger()
 	{
 		return logger;
@@ -102,13 +104,13 @@ public class GameManager<playerTwo> extends Observable
 					{
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
-						logger.info("{} of Player 2 was destroyed.",shipPart.getShip().getName());
+						logger.info("{} of Player 2 was destroyed.", shipPart.getShip().getName());
 					}
 					else
 					{
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerTwo(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
-						logger.info("{} of Player 1 was destroyed.",shipPart.getShip().getName());
+						logger.info("{} of Player 1 was destroyed.", shipPart.getShip().getName());
 					}
 				}
 			}
@@ -165,7 +167,7 @@ public class GameManager<playerTwo> extends Observable
 			.showMessage(Messages.getString("GameManager.InfoTextCongratulationsBitch") + activePlayer.getName() + Messages.getString("GameManager.InfoTextUWon")); //$NON-NLS-1$ //$NON-NLS-2$
 		mainFrame.dispose();
 		resetGame();
-	    logger.info("Game ended");
+		logger.info("Game ended");
 	}
 
 	//Spiel zurücksetzen
@@ -189,7 +191,7 @@ public class GameManager<playerTwo> extends Observable
 			activePlayer = playerOne;
 			notifyObservers(GUIStatusCode.ItsPlayerOnesTurnNow);
 		}
-	    logger.info("Next Turn");
+		logger.info("Next Turn");
 	}
 
 	//getter- und setter-Methoden zu den Spielern(inkl. in/aktiver Spieler)
@@ -262,7 +264,7 @@ public class GameManager<playerTwo> extends Observable
 		notifyObservers(GUIStatusCode.DataHasChanged);
 		nextTurn();
 		fireAtWill();
-	    logger.info("Game started");
+		logger.info("Game started");
 	}
 
 	//Schiffe setzen(Angabe des Schiffs, der Koordinaten, der Richtung)
