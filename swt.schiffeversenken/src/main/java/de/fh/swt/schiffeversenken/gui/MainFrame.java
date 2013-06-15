@@ -148,6 +148,15 @@ public class MainFrame extends JFrame
 		final MainFrame frame = this;
 		JMenu jMenu = new JMenu(Messages.getString("MainFrame.MenuData")); //$NON-NLS-1$
 		JMenuItem menuItemStart = new JMenuItem(Messages.getString("MainFrame.MenuStart")); //$NON-NLS-1$
+		JMenuItem menuItemOptions = new JMenuItem(Messages.getString("MainFrame.MenuOptions")); //$NON-NLS-1$
+		
+		menuItemOptions.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				gameManager.getAudioController().stopBackgroundMusic();
+			}
+		});
 		menuItemStart.addActionListener(new ActionListener()
 		{
 
@@ -169,6 +178,7 @@ public class MainFrame extends JFrame
 			}
 		});
 		jMenu.add(menuItemStart);
+		jMenu.add(menuItemOptions);
 		jMenu.add(menuItemBeenden);
 		jMenuBar.add(jMenu);
 		jMenuBar.setVisible(true);

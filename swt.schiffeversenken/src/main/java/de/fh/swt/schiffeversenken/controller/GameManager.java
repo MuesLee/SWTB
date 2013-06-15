@@ -17,7 +17,6 @@ import de.fh.swt.schiffeversenken.data.Player;
 import de.fh.swt.schiffeversenken.data.Ship;
 import de.fh.swt.schiffeversenken.data.ShipPart;
 import de.fh.swt.schiffeversenken.data.Shot;
-import de.fh.swt.schiffeversenken.data.SoundFile;
 import de.fh.swt.schiffeversenken.gui.GUIStatusCode;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
 import de.fh.swt.schiffeversenken.gui.Messages;
@@ -85,6 +84,7 @@ public class GameManager<playerTwo> extends Observable
 		if ((shipPart == null))
 		{
 			hitType = HitType.NOHIT;
+			audioController.playSound("shot_nohit");
 			logger.info("No ship was hit");
 		}
 		else
@@ -92,19 +92,22 @@ public class GameManager<playerTwo> extends Observable
 			if (!shipPart.isIntact())
 			{
 				hitType = HitType.HITAGAIN;
+				audioController.playSound("comment_wasted");
 				logger.info("A part of a {} was hit again", shipPart.getShip().getName());
 			}
 			else
 			{
+				audioController.playSound("shot_hit");
 				setHit(shipPart);
 				hitType = HitType.HIT;
+				
 				logger.info("A part of a {} was hit", shipPart.getShip().getName());
 				if (!shipPart.getShip().isIntact())
 				{
+					audioController.playSound("comment_terminated");
 					hitType = HitType.DESTROYED;
 					if (activePlayer == playerOne)
 					{
-						audioController.playSound(SoundFile.destroyed);
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
 						logger.info("{} of Player 2 was destroyed.", shipPart.getShip().getName());
@@ -141,6 +144,8 @@ public class GameManager<playerTwo> extends Observable
 		}
 		else
 		{
+			audioController.playSound("applause");
+			audioController.playSound("comment_hail");
 			endGame();
 		}
 
@@ -263,6 +268,7 @@ public class GameManager<playerTwo> extends Observable
 	//Spiel starten
 	public void startGame()
 	{
+		
 		setChanged();
 		notifyObservers(GUIStatusCode.DataHasChanged);
 		nextTurn();
@@ -285,6 +291,7 @@ public class GameManager<playerTwo> extends Observable
 
 		if (activePlayer == playerTwo)
 		{
+			audioController.playSound("comment_ready");
 			return true;
 		}
 		return false;
@@ -327,5 +334,9 @@ public class GameManager<playerTwo> extends Observable
 	public MainFrame getMainFrame()
 	{
 		return mainFrame;
+	}
+
+	public AudioController getAudioController() {
+		return audioController;
 	}
 }

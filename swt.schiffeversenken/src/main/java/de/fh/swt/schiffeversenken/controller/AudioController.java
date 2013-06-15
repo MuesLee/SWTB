@@ -8,22 +8,27 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
-import de.fh.swt.schiffeversenken.data.SoundFile;
-
 public class AudioController implements Runnable
 {
-
+	private Properties prop;
 	private Sequencer sequencer;
-	private Map<SoundFile, AudioClip> clips = new HashMap<SoundFile, AudioClip>();
+	private Map<String, AudioClip> clips = new HashMap<String, AudioClip>();
 
 	public AudioController()
-	{
+	{	
+		prop = new Properties();
+		try {
+			prop.load(ClassLoader.getSystemResourceAsStream("sounds.properties"));
+		} catch (IOException e) {
+			System.out.println("Properties konnte nicht geladen werden");
+		}
 		new Thread(this).start();
 	}
 
@@ -39,7 +44,7 @@ public class AudioController implements Runnable
 		{
 			sequencer = MidiSystem.getSequencer();
 			sequencer.open();
-			InputStream midiFile = ClassLoader.getSystemResourceAsStream(SoundFile.backgroundMusic.toString());
+			InputStream midiFile = ClassLoader.getSystemResourceAsStream(prop.getProperty("backgroundMusic"));
 			sequencer.setSequence(MidiSystem.getSequence(midiFile));
 			sequencer.setLoopCount(sequencer.LOOP_CONTINUOUSLY);
 			sequencer.start();
@@ -64,16 +69,16 @@ public class AudioController implements Runnable
 		sequencer.stop();
 	}
 
-	public void playSound(SoundFile soundFile)
+	public void playSound(String soundName)
 	{
 		AudioClip sound = null;
 
-		if (!clips.containsKey(soundFile))
+		if (!clips.containsKey(soundName))
 		{
 			try
 			{
-				File file = new File(soundFile.toString());
-				clips.put(soundFile, Applet.newAudioClip(file.toURI().toURL()));
+				File file = new File(prop.getProperty(soundName));
+				clips.put(soundName, Applet.newAudioClip(file.toURI().toURL()));
 			}
 			catch (MalformedURLException e)
 			{
@@ -82,7 +87,7 @@ public class AudioController implements Runnable
 			}
 		}
 
-		sound = clips.get(soundFile);
+		sound = clips.get(soundName);
 		sound.play();
 	}
 
