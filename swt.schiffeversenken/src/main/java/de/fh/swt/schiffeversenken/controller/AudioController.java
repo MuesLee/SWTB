@@ -22,11 +22,14 @@ public class AudioController implements Runnable
 	private Map<String, AudioClip> clips = new HashMap<String, AudioClip>();
 
 	public AudioController()
-	{	
+	{
 		prop = new Properties();
-		try {
+		try
+		{
 			prop.load(ClassLoader.getSystemResourceAsStream("sounds.properties"));
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			System.out.println("Properties konnte nicht geladen werden");
 		}
 		new Thread(this).start();

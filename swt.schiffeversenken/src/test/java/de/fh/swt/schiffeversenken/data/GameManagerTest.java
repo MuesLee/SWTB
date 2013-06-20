@@ -57,4 +57,10 @@ public class GameManagerTest
 		Assert.assertEquals(seamap2.getShipPart(coordsCruiser2).isIntact(), false);
 	}
 
+	@Test
+	public void putShipsRandomOnSeamap()
+	{
+		gameManager.putShipsRandomOnSeamap(gameManager.getPlayerOne());
+	}
+
 }

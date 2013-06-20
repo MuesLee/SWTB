@@ -1,13 +1,16 @@
 package de.fh.swt.schiffeversenken.gui;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import de.fh.swt.schiffeversenken.controller.GameManager;
 
 public class ConfigurationFrame extends JFrame
 {
@@ -16,6 +19,8 @@ public class ConfigurationFrame extends JFrame
 	private JButton buttonCancel;
 	private JTextField textNamePlayerOne;
 	private JTextField textNamePlayerTwo;
+	private JCheckBox checkBoxRandomShipsPlayerOne;
+	private JCheckBox checkBoxRandomShipsPlayerTwo;
 	private MainFrame mainFrame;
 
 	//Konfigurieren des Mainframes
@@ -23,21 +28,37 @@ public class ConfigurationFrame extends JFrame
 	{
 
 		this.mainFrame = mainFrame;
+		configure();
+		repaint();
+		setVisible(true);
+	}
 
+	private void configure()
+	{
 		configureFrame();
 		configureTextFields();
 		configureBoxes();
-		repaint();
-		setVisible(true);
+		configureCheckBoxes();
+		add(textNamePlayerOne);
+		add(checkBoxRandomShipsPlayerOne);
+		add(textNamePlayerTwo);
+		add(checkBoxRandomShipsPlayerTwo);
+		add(buttonStart);
+		add(buttonCancel);
+	}
+
+	private void configureCheckBoxes()
+	{
+		checkBoxRandomShipsPlayerOne = new JCheckBox("Zufällige Schiffsplatzierung");
+		checkBoxRandomShipsPlayerTwo = new JCheckBox("Zufällige Schiffsplatzierung");
 	}
 
 	//Konfigurieren des Frames(Größe, Layout etc.)
 	private void configureFrame()
 	{
-
+		setLayout(new GridLayout(3, 2));
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.3, 0.4);
 		setSize(size);
-		setLayout(new FlowLayout());
 		setPreferredSize(size);
 		setMaximumSize(size);
 		setResizable(false);
@@ -60,7 +81,27 @@ public class ConfigurationFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				mainFrame.showShipPlacementFrame();
+				GameManager gameManager = mainFrame.getGameManager();
+				if (checkBoxRandomShipsPlayerOne.isSelected() && checkBoxRandomShipsPlayerTwo.isSelected())
+				{
+					gameManager.putShipsRandomOnSeamap(gameManager.getPlayerOne());
+					gameManager.putShipsRandomOnSeamap(gameManager.getPlayerTwo());
+					mainFrame.startGame();
+					dispose();
+				}
+				else
+				{
+					if (checkBoxRandomShipsPlayerOne.isSelected())
+					{
+						gameManager.putShipsRandomOnSeamap(gameManager.getPlayerOne());
+						gameManager.nextTurn();
+					}
+					else
+					{
+						gameManager.putShipsRandomOnSeamap(gameManager.getPlayerTwo());
+					}
+					mainFrame.showShipPlacementFrame();
+				}
 				dispose();
 			}
 
@@ -75,8 +116,6 @@ public class ConfigurationFrame extends JFrame
 				setVisible(false);
 			}
 		});
-		add(buttonStart);
-		add(buttonCancel);
 	}
 
 	//Konfigurieren der Textfelder
@@ -84,8 +123,6 @@ public class ConfigurationFrame extends JFrame
 	{
 		textNamePlayerOne = new JTextField(Messages.getString("ConfigurationFrame.TextFieldPlaceholderP1")); //$NON-NLS-1$
 		textNamePlayerTwo = new JTextField(Messages.getString("ConfigurationFrame.TextFieldPlaceholderP2")); //$NON-NLS-1$
-		add(textNamePlayerOne);
-		add(textNamePlayerTwo);
 	}
 
 	//Namen der Spieler auslesen

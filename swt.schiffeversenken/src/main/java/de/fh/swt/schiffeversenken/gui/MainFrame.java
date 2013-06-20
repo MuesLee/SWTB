@@ -149,11 +149,13 @@ public class MainFrame extends JFrame
 		JMenu jMenu = new JMenu(Messages.getString("MainFrame.MenuData")); //$NON-NLS-1$
 		JMenuItem menuItemStart = new JMenuItem(Messages.getString("MainFrame.MenuStart")); //$NON-NLS-1$
 		JMenuItem menuItemOptions = new JMenuItem(Messages.getString("MainFrame.MenuOptions")); //$NON-NLS-1$
-		
-		menuItemOptions.addActionListener(new ActionListener() {
-			
+
+		menuItemOptions.addActionListener(new ActionListener()
+		{
+
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0)
+			{
 				gameManager.getAudioController().stopBackgroundMusic();
 			}
 		});
@@ -222,6 +224,12 @@ public class MainFrame extends JFrame
 	public ShipPlacementFrame getShipPlacementFrame()
 	{
 		return shipPlacementFrame;
+	}
+
+	public void startGame()
+	{
+		showSeamapFrames();
+		getGameManager().startGame();
 	}
 
 }

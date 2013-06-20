@@ -1,5 +1,6 @@
 package de.fh.swt.schiffeversenken.data;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,15 @@ public class Player
 		this.seamap = new Seamap(seamapSize);
 		fillShipList();
 
+	}
+
+	public boolean hasPlacedHisShips()
+	{
+		if (ships.size() != seamap.getPlacedShips().size())
+		{
+			return false;
+		}
+		return true;
 	}
 
 	//füllen der Liste mit den zu platzierenden Schiffen

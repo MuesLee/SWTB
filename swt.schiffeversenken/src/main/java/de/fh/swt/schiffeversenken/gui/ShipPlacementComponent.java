@@ -29,13 +29,12 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	private ShipPlacementFrame shipPlacementFrame;
 
 	//setzt alle nötigen Komponenten für die ShipPlacementComponent
-	public ShipPlacementComponent( ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size)
+	public ShipPlacementComponent(ShipPlacementFrame shipPlacementFrame, GameManager gameManager, Dimension size)
 	{
-
 		this.gameManager = gameManager;
 		this.gameManager.addObserver(this);
 		this.shipPlacementFrame = shipPlacementFrame;
-		
+
 		currentViewOfPlayer = gameManager.getViewOfCurrrentPlayersOwnShips();
 		seamapSize = currentViewOfPlayer.length;
 		configure(size);
@@ -51,7 +50,6 @@ public class ShipPlacementComponent extends JComponent implements Observer
 		{
 			for (int y = 0; y < seamapSize; y++)
 			{
-
 				g.setColor(currentViewOfPlayer[x][y]);
 				g.fillRect(x * (cellSize + spaceBetweenCells), y * (cellSize + spaceBetweenCells), cellSize, cellSize);
 
@@ -59,7 +57,7 @@ public class ShipPlacementComponent extends JComponent implements Observer
 		}
 
 	}
-	
+
 	//gibt die GUI zurück, welche zum Setzen der Schiffe fungiert
 	private Color[][] getViewOfPlayer()
 	{
@@ -78,18 +76,17 @@ public class ShipPlacementComponent extends JComponent implements Observer
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-					super.mouseClicked(e);
-					int x = ((int) e.getLocationOnScreen().getX() - getLocationOnScreen().x)
-						/ (cellSize + spaceBetweenCells);
-					int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
-						/ (cellSize + spaceBetweenCells);
+				super.mouseClicked(e);
+				int x = ((int) e.getLocationOnScreen().getX() - getLocationOnScreen().x)
+					/ (cellSize + spaceBetweenCells);
+				int y = ((int) e.getLocationOnScreen().getY() - getLocationOnScreen().y)
+					/ (cellSize + spaceBetweenCells);
 
-						placeShip(x, y);
+				placeShip(x, y);
 			}
 		});
 	}
 
-	
 	//Setzen der Schiffe in richtiger Richtung(wenn möglich)
 	public void placeShip(int x, int y)
 	{
@@ -150,12 +147,13 @@ public class ShipPlacementComponent extends JComponent implements Observer
 	{
 		return shipPlacementFrame;
 	}
-	
+
 	//Neu zeichnen der Oberfläche
+	@Override
 	public void update(Observable o, Object arg)
 	{
-			currentViewOfPlayer = getViewOfPlayer();
-			
+		currentViewOfPlayer = getViewOfPlayer();
+
 		repaint();
 	}
 

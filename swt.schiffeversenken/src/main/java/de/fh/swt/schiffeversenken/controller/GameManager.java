@@ -21,7 +21,7 @@ import de.fh.swt.schiffeversenken.gui.GUIStatusCode;
 import de.fh.swt.schiffeversenken.gui.MainFrame;
 import de.fh.swt.schiffeversenken.gui.Messages;
 
-public class GameManager<playerTwo> extends Observable
+public class GameManager extends Observable
 {
 	private static GameManager instance;
 	private static Logger logger = LoggerFactory.getLogger(GameManager.class);
@@ -64,7 +64,6 @@ public class GameManager<playerTwo> extends Observable
 		playerOne = new Player(Messages.getString("GameManager.NamePlayer1Default"), seamapSize); //$NON-NLS-1$
 		playerTwo = new Player(Messages.getString("GameManager.NamePlayer2Default"), seamapSize); //$NON-NLS-1$
 		activePlayer = playerOne;
-
 	}
 
 	public void startUp()
@@ -83,8 +82,8 @@ public class GameManager<playerTwo> extends Observable
 
 		if ((shipPart == null))
 		{
-			hitType = HitType.NOHIT;
 			audioController.playSound("shot_nohit");
+			hitType = HitType.NOHIT;
 			logger.info("No ship was hit");
 		}
 		else
@@ -92,22 +91,20 @@ public class GameManager<playerTwo> extends Observable
 			if (!shipPart.isIntact())
 			{
 				hitType = HitType.HITAGAIN;
-				audioController.playSound("comment_wasted");
 				logger.info("A part of a {} was hit again", shipPart.getShip().getName());
 			}
 			else
 			{
-				audioController.playSound("shot_hit");
 				setHit(shipPart);
+				audioController.playSound("shot_hit");
 				hitType = HitType.HIT;
-				
 				logger.info("A part of a {} was hit", shipPart.getShip().getName());
 				if (!shipPart.getShip().isIntact())
 				{
-					audioController.playSound("comment_terminated");
 					hitType = HitType.DESTROYED;
 					if (activePlayer == playerOne)
 					{
+						audioController.playSound("comment_terminated");
 						JOptionPane.showMessageDialog(mainFrame.getFramePlayerOne(), shipPart.getShip().getName()
 							+ Messages.getString("GameManager.InfoTextHasbeenDestroyed")); //$NON-NLS-1$
 						logger.info("{} of Player 2 was destroyed.", shipPart.getShip().getName());
@@ -144,8 +141,6 @@ public class GameManager<playerTwo> extends Observable
 		}
 		else
 		{
-			audioController.playSound("applause");
-			audioController.playSound("comment_hail");
 			endGame();
 		}
 
@@ -268,7 +263,6 @@ public class GameManager<playerTwo> extends Observable
 	//Spiel starten
 	public void startGame()
 	{
-		
 		setChanged();
 		notifyObservers(GUIStatusCode.DataHasChanged);
 		nextTurn();
@@ -276,22 +270,56 @@ public class GameManager<playerTwo> extends Observable
 		logger.info("Game started");
 	}
 
-	//Schiffe setzen(Angabe des Schiffs, der Koordinaten, der Richtung)
-	public void putShipOnSeamap(Ship ship, Coords coords, Direction dir) throws IllegalShipPlacementException
+	public void putShipsRandomOnSeamap(Player player)
 	{
-		activePlayer.putShipOnSeamap(ship, coords, dir);
+		int max = player.getSeamap().getSize();
+
+		for (Ship ship : player.getShips())
+		{
+			boolean shipIsNotPlaced = true;
+
+			while (shipIsNotPlaced)
+			{
+				int x = (int) (Math.random() * max);
+				int y = (int) (Math.random() * max);
+				Coords coords = new Coords(x, y);
+
+				double foo = Math.random();
+				Direction direction = Direction.DOWN;
+				if (foo >= 0.50)
+				{
+					direction = Direction.RIGHT;
+				}
+
+				if (player.getSeamap().shipCanBePlaced(coords, direction, ship))
+				{
+					try
+					{
+						player.putShipOnSeamap(ship, coords, direction);
+						shipIsNotPlaced = false;
+					}
+					catch (IllegalShipPlacementException e)
+					{
+						logger.error("Fehler aufgetreten in putShipsRandomOnSeamap.", e);
+					}
+				}
+			}
+		}
+	}
+
+	//Schiffe setzen(Angabe des Schiffs, der Koordinaten, der Richtung)
+	public void putShipOnSeamap(Ship ship, Coords coords, Direction direction) throws IllegalShipPlacementException
+	{
+		activePlayer.putShipOnSeamap(ship, coords, direction);
 		setChanged();
 		notifyObservers(GUIStatusCode.DataHasChanged);
-
 	}
 
 	//Haben beide Spieler ihre Schiffe platziert?
 	public boolean bothPlayerPlacedTheirShips()
 	{
-
-		if (activePlayer == playerTwo)
+		if (playerOne.hasPlacedHisShips() && playerTwo.hasPlacedHisShips())
 		{
-			audioController.playSound("comment_ready");
 			return true;
 		}
 		return false;
@@ -336,7 +364,8 @@ public class GameManager<playerTwo> extends Observable
 		return mainFrame;
 	}
 
-	public AudioController getAudioController() {
+	public AudioController getAudioController()
+	{
 		return audioController;
 	}
 }
