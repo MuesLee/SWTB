@@ -11,15 +11,16 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineEvent.Type;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class AudioController implements Runnable
+public class AudioController
 {
 	private Properties prop;
 	private Sequencer sequencer;
@@ -36,13 +37,6 @@ public class AudioController implements Runnable
 		{
 			System.out.println("Properties konnte nicht geladen werden");
 		}
-		new Thread(this).start();
-	}
-
-	@Override
-	public void run()
-	{
-
 	}
 
 	public boolean sequencerIsRunning()
@@ -86,56 +80,95 @@ public class AudioController implements Runnable
 		sequencer.close();
 	}
 
-	public void playSound(String soundName)
+	public synchronized void playSound(final String soundName)
 	{
-		try
+		new Thread(new Runnable()
 		{
-			AudioInputStream audioInputStream;
-			audioInputStream = AudioSystem.getAudioInputStream(getFile(soundName));
-			AudioFormat format = audioInputStream.getFormat();
-			//ALAW/ULAW samples in PCM konvertieren
-			if ((format.getEncoding() == AudioFormat.Encoding.ULAW)
-				|| ((format.getEncoding() == AudioFormat.Encoding.ALAW)))
+
+			@Override
+			public void run()
 			{
-				System.out.println("encoding");
-				AudioFormat tmp = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, format.getSampleRate(),
-					format.getSampleSizeInBits() * 2, format.getChannels(), format.getFrameSize() * 2,
-					format.getFrameRate(), true);
-				audioInputStream = AudioSystem.getAudioInputStream(tmp, audioInputStream);
-				format = tmp;
+				try
+				{
+					playClip(soundName);
+				}
+				catch (IOException e)
+				{
+
+				}
+				catch (UnsupportedAudioFileException e)
+				{
+				}
+				catch (LineUnavailableException e)
+
+				{
+
+				}
+				catch (InterruptedException e)
+				{
+				}
 			}
-			int size = (int) (format.getFrameSize() * audioInputStream.getFrameLength());
-			byte[] audio = new byte[size];
-			DataLine.Info info = new DataLine.Info(Clip.class, format, size);
-			audioInputStream.read(audio, 0, size);
-			Clip clip = (Clip) AudioSystem.getLine(info);
-			clip.open(format, audio, 0, size);
-			clip.start();
 
-		}
-		catch (UnsupportedAudioFileException e)
-		{
-			System.out.println("SCHEISS FILE!");
-		}
-		catch (IOException e)
-		{
+			private File getFile(String soundName)
+			{
 
-		}
-		catch (LineUnavailableException e)
-		{
-			System.out.println("KEINE LINE MEHR DA");
-		}
+				if (!clips.containsKey(soundName))
+				{
+					File file = new File(prop.getProperty(soundName));
+					clips.put(soundName, file);
+				}
+				return clips.get(soundName);
+			}
 
-	}
+			private void playClip(String soundName) throws IOException, UnsupportedAudioFileException,
+				LineUnavailableException, InterruptedException
+			{
+				class AudioListener implements LineListener
+				{
+					private boolean done = false;
 
-	private File getFile(String soundName)
-	{
+					@Override
+					public synchronized void update(LineEvent event)
+					{
+						Type eventType = event.getType();
+						if ((eventType == Type.STOP) || (eventType == Type.CLOSE))
+						{
+							done = true;
+							notifyAll();
+						}
+					}
 
-		if (!clips.containsKey(soundName))
-		{
-			File file = new File(prop.getProperty(soundName));
-			clips.put(soundName, file);
-		}
-		return clips.get(soundName);
+					public synchronized void waitUntilDone() throws InterruptedException
+					{
+						while (!done)
+						{
+							wait();
+						}
+					}
+				}
+				AudioListener listener = new AudioListener();
+				AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(ClassLoader
+					.getSystemResourceAsStream(prop.getProperty(soundName)));
+				try
+				{
+					Clip clip = AudioSystem.getClip();
+					clip.addLineListener(listener);
+					clip.open(audioInputStream);
+					try
+					{
+						clip.start();
+						listener.waitUntilDone();
+					}
+					finally
+					{
+						clip.close();
+					}
+				}
+				finally
+				{
+					audioInputStream.close();
+				}
+			}
+		}).start();
 	}
 }

@@ -39,7 +39,6 @@ public class GameManager extends Observable
 	{
 		audioController = new AudioController();
 		initiate();
-
 	}
 
 	//GameManager Instanz sicherstellen
