@@ -75,9 +75,7 @@ public class GameManager extends Observable
 	public HitType handleShot(Coords coords)
 	{
 		HitType hitType = HitType.UNKNOWN;
-
 		ceaseFire();
-
 		ShipPart shipPart = getInactivePlayersShipPartForCoords(coords);
 
 		if ((shipPart == null))
@@ -91,6 +89,7 @@ public class GameManager extends Observable
 			if (!shipPart.isIntact())
 			{
 				hitType = HitType.HITAGAIN;
+				audioController.playSound("comment_annoying");
 				logger.info("A part of a {} was hit again", shipPart.getShip().getName());
 			}
 			else
@@ -117,7 +116,6 @@ public class GameManager extends Observable
 					}
 				}
 			}
-
 		}
 		Shot shot = new Shot(coords, hitType);
 		storeShot(shot);
@@ -268,6 +266,7 @@ public class GameManager extends Observable
 		nextTurn();
 		fireAtWill();
 		logger.info("Game started");
+		audioController.startBackgroundMusic();
 	}
 
 	public void putShipsRandomOnSeamap(Player player)

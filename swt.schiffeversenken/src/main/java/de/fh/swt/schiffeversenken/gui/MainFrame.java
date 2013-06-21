@@ -27,6 +27,7 @@ public class MainFrame extends JFrame
 	private SeamapFrame framePlayerOne;
 	private SeamapFrame framePlayerTwo;
 	private SeamapPanel seamapComponentTwo;
+	private OptionFrame optionFrame;
 
 	//GameManager setzen und Überschrift festlegen
 	public MainFrame(GameManager gameManager)
@@ -142,6 +143,11 @@ public class MainFrame extends JFrame
 		JOptionPane.showMessageDialog(this, message);
 	}
 
+	private void showOptionFrame()
+	{
+		optionFrame = new OptionFrame(this);
+	}
+
 	//Konfigurieren des Menüs
 	private void configureMenu()
 	{
@@ -152,27 +158,25 @@ public class MainFrame extends JFrame
 
 		menuItemOptions.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				gameManager.getAudioController().stopBackgroundMusic();
+				showOptionFrame();
 			}
+
 		});
 		menuItemStart.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				showConfFrame();
-
 			}
 		});
+
 		JMenuItem menuItemBeenden = new JMenuItem(Messages.getString("MainFrame.MenuExit")); //$NON-NLS-1$
 		menuItemBeenden.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{

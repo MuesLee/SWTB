@@ -49,13 +49,14 @@ public class ConfigurationFrame extends JFrame
 
 	private void configureCheckBoxes()
 	{
-		checkBoxRandomShipsPlayerOne = new JCheckBox("Zufällige Schiffsplatzierung");
-		checkBoxRandomShipsPlayerTwo = new JCheckBox("Zufällige Schiffsplatzierung");
+		checkBoxRandomShipsPlayerOne = new JCheckBox(Messages.getString("ConfigurationFrame.RandomShipPlacement")); //$NON-NLS-1$
+		checkBoxRandomShipsPlayerTwo = new JCheckBox(Messages.getString("ConfigurationFrame.RandomShipPlacement")); //$NON-NLS-1$
 	}
 
 	//Konfigurieren des Frames(Größe, Layout etc.)
 	private void configureFrame()
 	{
+		setTitle(Messages.getString("ConfigurationFrame.FrameTitle")); //$NON-NLS-1$
 		setLayout(new GridLayout(3, 2));
 		Dimension size = GUIHelper.getProperSizeRelativeToScreensize(0.3, 0.4);
 		setSize(size);
